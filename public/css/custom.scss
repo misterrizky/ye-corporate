@@ -2,46 +2,17 @@
     --primary-light: #8f44fd;
     --primary: #6d5dfc;
     --primary-dark: #5b0eeb;
-
+    
     --white: #FFFFFF;
     --greyLight-1: #E4EBF5;
     --greyLight-2: #c8d0e7;
     --greyLight-3: #bec8e4;
     --greyDark: #9baacf;
 }
-
-$shadow: .3rem .3rem .6rem var(--greyLight-2),
+$shadow: .3rem .3rem .6rem var(--greyLight-2), 
 -.2rem -.2rem .5rem var(--white);
-$inner-shadow: inset .2rem .2rem .5rem var(--greyLight-2),
+$inner-shadow: inset .2rem .2rem .5rem var(--greyLight-2), 
 inset -.2rem -.2rem .5rem var(--white);
-
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-}
-
-html {
-    box-sizing: border-box;
-    font-size: 62.5%; // 1rem = 10px    100% = 16px
-    overflow-y: scroll;
-    background: var(--greyLight-1);
-
-    @media screen and (min-width: 900px) {
-        font-size: 75%;
-    }
-}
-
-.container {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Poppins', sans-serif;
-    background: var(--greyLight-1);
-}
 
 .components {
     width: 75rem;
