@@ -23,6 +23,8 @@ return new class extends Migration
             $table->longText('tag_description')->nullable();
             $table->string('tag_keyword')->nullable();
             $table->enum('st',['Published','Unpublished'])->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('items', function (Blueprint $table) {
             $table->id();
@@ -42,6 +44,7 @@ return new class extends Migration
             $table->enum('st',['Published','Unpublished'])->nullable();
             $table->integer('created_by')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('item_files', function (Blueprint $table) {
             $table->id();
@@ -49,11 +52,13 @@ return new class extends Migration
             $table->string('files');
             $table->string('is_extend')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('item_galleries', function (Blueprint $table) {
             $table->id();
             $table->integer('item_id')->default(0);
             $table->string('photo');
+            $table->softDeletes();
         });
         Schema::create('item_reviews', function (Blueprint $table) {
             $table->id();
@@ -62,6 +67,7 @@ return new class extends Migration
             $table->string('rate',3)->nullable();
             $table->longtext('comment')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
@@ -82,6 +88,7 @@ return new class extends Migration
             $table->string('payment_method')->nullable();
             $table->enum('st',['Wait for payment','Cancel','Finish'])->default('Wait for payment');
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('sale_details', function (Blueprint $table) {
             $table->id();
@@ -92,6 +99,7 @@ return new class extends Migration
             $table->float('price',20,0)->default(0);
             $table->float('qty',10)->default(0);
             $table->string('subtotal')->default(0);
+            $table->softDeletes();
         });
         Schema::create('sale_licenses', function (Blueprint $table) {
             $table->id();
@@ -99,12 +107,14 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->date('valid_until')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->integer('code');
             $table->date('valid_until')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

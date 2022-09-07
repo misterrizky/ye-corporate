@@ -14,13 +14,21 @@
                                 </span>
                             </div>
                         </div>
+                        @php
+                        $total = 0;
+                        $files = Storage::disk('public')->allFiles();
+                        foreach ($files as $key => $file) {
+                            // $files_with_size[$key]['name'] = $file;
+                            $total += Storage::disk('public')->size($file);
+                        }
+                        @endphp
                         <div class="d-flex flex-column">
                             <h2 class="mb-1">Document Type</h2>
                             <div class="text-muted fw-bold">
                             <a href="javascript:;">{{config('app.name')}}</a>
                             <span class="mx-3">|</span>
                             <a href="javascript:;">Document Type</a>
-                            <span class="mx-3">|</span>2.6 GB
+                            <span class="mx-3">|</span>{{formatBytes($total)}}
                             <span class="mx-3">|</span>758 items</div>
                         </div>
                     </div>

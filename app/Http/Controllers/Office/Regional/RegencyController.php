@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class RegencyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:regency-list|regency-create|regency-edit|regency-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:regency-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:regency-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:regency-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -28,19 +36,11 @@ class RegencyController extends Controller
             'code' => 'required|unique:regencies,id',
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $regency = new Regency;
         $regency->province_id = $request->province_id;
@@ -70,19 +70,11 @@ class RegencyController extends Controller
             'code' => 'required|unique:regencies,id,'.$regency->id,
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $regency->province_id = $request->province_id;
         $regency->id = $request->code;
@@ -118,5 +110,14 @@ class RegencyController extends Controller
     public function show_edit(Regency $regency, District $district)
     {
         return view('pages.office.regional.regency.show_input', ['data' => $district, 'regency' => $regency]);
+    }
+    public function get_list(Request $request)
+    {
+        $collection = District::where('regency_id',$request->regency)->get();
+        $list = "<option value=''>Choose District</option>";
+        foreach($collection as $row){
+            $list .= "<option value='$row->id'>$row->name</option>";
+        }
+        return $list;
     }
 }

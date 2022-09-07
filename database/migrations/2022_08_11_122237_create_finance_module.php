@@ -17,12 +17,14 @@ return new class extends Migration
             $table->id();
             $table->string('code',10);
             $table->string('name');
+            $table->softDeletes();
         });
         Schema::create('coas', function (Blueprint $table) {
             $table->id();
             $table->integer('coa_category_id')->default(0);
             $table->string('code',10);
             $table->string('name');
+            $table->softDeletes();
         });
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
@@ -32,6 +34,7 @@ return new class extends Migration
             $table->string('debit')->default(0);
             $table->string('credit')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
@@ -39,6 +42,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('total')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('expense_details', function (Blueprint $table) {
             $table->id();
@@ -47,6 +51,7 @@ return new class extends Migration
             $table->string('amount',10);
             $table->string('attachment');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -108,7 +108,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-3">
+                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-4">
                                 <div class="col">
                                     <div class="fv-row mb-7">
                                         <label class="fs-6 fw-semibold form-label mt-3">
@@ -144,10 +144,34 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col">
+                                    <div class="fv-row mb-7">
+                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                            <span class="required">Industry</span>
+                                        </label>
+                                        <div class="w-100">
+                                            <div class="form-floating border rounded">
+                                                <select id="industry" name="industry" class="form-select form-select-solid lh-1 py-3">
+                                                    <option value="">Choose Industry</option>
+                                                    @foreach ($industry as $item)
+                                                        <option value="{{$item->id}}" {{$data->company_industry_id == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="fv-row mb-7">
                                 <label class="fs-6 fw-semibold form-label mt-3">
-                                    <span>Notes</span>
+                                    <span>Address</span>
+                                    <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Enter any additional notes about the contact (optional)."></i>
+                                </label>
+                                <textarea class="form-control form-control-solid" name="address">{{$data->address}}</textarea>
+                            </div>
+                            <div class="fv-row mb-7">
+                                <label class="fs-6 fw-semibold form-label mt-3">
+                                    <span class="required">Notes</span>
                                     <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Enter any additional notes about the contact (optional)."></i>
                                 </label>
                                 <textarea class="form-control form-control-solid" name="notes">{{$data->notes}}</textarea>
@@ -175,6 +199,7 @@
     format_email('email');
     number_only('phone');
     obj_select('group','Choose Group');
+    obj_select('industry','Choose Industry');
     function handleStore(tombol, form, url, method){
         $(document).one('submit', form, function(e) {
             let data = new FormData(this);

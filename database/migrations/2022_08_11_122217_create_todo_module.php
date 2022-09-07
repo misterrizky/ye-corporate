@@ -16,12 +16,14 @@ return new class extends Migration
         Schema::create('due_reminders', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->softDeletes();
         });
         Schema::create('todo_lists', function (Blueprint $table) {
             $table->id();
             $table->integer('project_id')->default(0);
             $table->string('title');
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('todo_card_lists', function (Blueprint $table) {
             $table->id();
@@ -35,18 +37,21 @@ return new class extends Migration
             $table->enum('priority',['Low','Medium','High'])->nullable();
             $table->string('st')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('todo_card_activities', function (Blueprint $table) {
             $table->id();
             $table->integer('todo_card_lists_id')->default(0);
             $table->longText('body')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('todo_card_attachments', function (Blueprint $table) {
             $table->id();
             $table->integer('todo_card_lists_id')->default(0);
             $table->string('file')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

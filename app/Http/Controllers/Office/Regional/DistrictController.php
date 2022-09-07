@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class DistrictController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:employee-list|employee-create|employee-edit|employee-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:employee-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:employee-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:employee-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -28,19 +36,11 @@ class DistrictController extends Controller
             'code' => 'required|unique:districts,id',
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $district = new District;
         $district->regency_id = $request->regency_id;
@@ -70,19 +70,11 @@ class DistrictController extends Controller
             'code' => 'required|unique:districts,id,'.$district->id,
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $district->regency_id = $request->regency_id;
         $district->id = $request->code;
@@ -118,5 +110,14 @@ class DistrictController extends Controller
     public function show_edit(District $district, Village $village)
     {
         return view('pages.office.regional.district.show_input', ['data' => $village, 'district' => $district]);
+    }
+    public function get_list(Request $request)
+    {
+        $collection = Village::where('district_id',$request->district)->get();
+        $list = "<option value=''>Choose Village</option>";
+        foreach($collection as $row){
+            $list .= "<option value='$row->id'>$row->name</option>";
+        }
+        return $list;
     }
 }

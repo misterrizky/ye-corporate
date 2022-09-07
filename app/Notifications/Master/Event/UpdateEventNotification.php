@@ -30,8 +30,8 @@ class UpdateEventNotification extends Notification
     {
         return [
             'tipe' => 'Event',
-            'nama' => $this->employee->name,
-            'pesan' => "Hi ".$this->employee->name.", ".$this->event->name." just updated by ".$this->employee->name." at ".$this->event->start_at->format('d F Y, g:i a')." to ".$this->event->end_at->format('d F Y, g:i a')."."
+            'nama' => $this->event->name,
+            'pesan' => "Hi ".$notifiable->name.", ".$this->event->name." just updated by ".$this->employee->name." at ".$this->event->start_at->format('d F Y, g:i a')." to ".$this->event->end_at->format('d F Y, g:i a')."."
         ];
     }
 }

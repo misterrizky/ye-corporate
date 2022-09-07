@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class CountryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:country-list|country-create|country-edit|country-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:country-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:country-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:country-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -28,19 +36,11 @@ class CountryController extends Controller
             'code' => 'required|unique:countries',
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $country = new Country;
         $country->code = $request->code;
@@ -69,19 +69,11 @@ class CountryController extends Controller
             'code' => 'required|unique:countries,code,'.$country->id,
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $country->code = $request->code;
         $country->name = $request->name;

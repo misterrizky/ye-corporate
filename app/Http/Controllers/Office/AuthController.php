@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Office;
 
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\HRM\Employee;
@@ -15,13 +16,13 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\HRM\EmployeeAttendance;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\VerificationNotification;
 use App\Notifications\Attendance\InNotification;
-use App\Notifications\ResetPasswordNotification;
 use App\Notifications\Attendance\OutNotification;
-use App\Notifications\PasswordChangedNotification;
-use App\Notifications\RegisteredEmployeeNotification;
-use App\Notifications\RegistrationEmployeeNotification;
+use App\Notifications\Auth\VerificationNotification;
+use App\Notifications\Auth\ResetPasswordNotification;
+use App\Notifications\Auth\PasswordChangedNotification;
+use App\Notifications\Auth\EmployeeRegisterNotification;
+use App\Notifications\Auth\RegisterEmployeeNotification;
 
 class AuthController extends Controller
 {
@@ -151,13 +152,13 @@ class AuthController extends Controller
         $token = Str::random(64);
         $recepient = Employee::whereIn('position_id',[4,6,13,17])->get();
         foreach($recepient as $r){
-            Notification::send($r, new RegisteredEmployeeNotification($employee));
+            Notification::send($r, new RegisterEmployeeNotification($employee));
         }
         UserVerify::create([
             'employee_id' => $employee->id,
             'token' => $token
         ]);
-        Notification::send($employee, new RegistrationEmployeeNotification($employee, $token));
+        Notification::send($employee, new EmployeeRegisterNotification($employee, $token));
         return response()->json([
             'alert' => 'success',
             'message' => 'Thanks for join us '. Str::title($request->first) . ' ' . Str::title($request->last),
@@ -227,11 +228,11 @@ class AuthController extends Controller
             'route' => route('office.auth.index'),
         ]);
     }
-    public function reset(Request $request)
+    public function reset(Request $request, $token)
     {
         if($request->ajax())
         {
-            return view('pages.office.auth.reset');
+            return view('pages.office.auth.reset',compact('token'));
         }
         return view('pages.office.auth.theme');
     }
@@ -270,7 +271,7 @@ class AuthController extends Controller
         }
         Employee::where('email', $updatePassword->email)->update(['password' => Hash::make($request->password)]);
         $users = Employee::where('email', $updatePassword->email)->first();
-        PasswordReset::where(['email' => $updatePassword->email])->delete();
+        // PasswordReset::where(['email' => $updatePassword->email])->delete();
         Notification::send($users, new PasswordChangedNotification($users));
         return response()->json([
             'alert' => 'success',
@@ -307,7 +308,7 @@ class AuthController extends Controller
                     'employee_id' => $newUser->id,
                     'token' => $token
                 ]);
-                Notification::send($newUser, new RegistrationEmployeeNotification($newUser, $token));
+                Notification::send($newUser, new EmployeeRegisterNotification($newUser, $token));
                 Auth::guard('employees')->login($newUser, true);
                 // return redirect()->intended('dashboard');
                 return redirect()->route('office.dashboard');

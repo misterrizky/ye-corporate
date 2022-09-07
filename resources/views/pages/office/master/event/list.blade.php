@@ -86,13 +86,11 @@
                                 type: type
                             },
                             success: function(response) {
-                                if (response.alert == "success") {
-                                    load_list("{{route('office.master.event.list')}}",1);
-                                    toastify_message(response.message);
-                                } else {
-                                    toastify_message('Event Not Created');
-                                }
-                            }
+                                handle_success(response);
+                            },
+                            error: function(xhr) {
+                                handle_error(xhr);
+                            },
                         })
                     }
                     calendar.unselect()

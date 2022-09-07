@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:employee-list|employee-create|employee-edit|employee-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:employee-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:employee-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:employee-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -34,44 +42,11 @@ class EmployeeController extends Controller
             'position' => 'required',
             'job_desc' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('nip')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('nip'),
-                ]);
-            }elseif ($errors->has('name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }elseif ($errors->has('email')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('email'),
-                ]);
-            }elseif ($errors->has('phone')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('phone'),
-                ]);
-            }elseif ($errors->has('department')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('department'),
-                ]);
-            }elseif ($errors->has('position')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('position'),
-                ]);
-            }elseif ($errors->has('job_desc')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('job_desc'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $employee = new Employee;
         $employee->nip = $request->nip;
@@ -111,44 +86,11 @@ class EmployeeController extends Controller
             'position' => 'required',
             'job_desc' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('nip')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('nip'),
-                ]);
-            }elseif ($errors->has('name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }elseif ($errors->has('email')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('email'),
-                ]);
-            }elseif ($errors->has('phone')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('phone'),
-                ]);
-            }elseif ($errors->has('department')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('department'),
-                ]);
-            }elseif ($errors->has('position')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('position'),
-                ]);
-            }elseif ($errors->has('job_desc')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('job_desc'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $employee->nip = $request->nip;
         $employee->name = $request->name;

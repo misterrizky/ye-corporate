@@ -44,7 +44,7 @@ localStorage.setItem("route_notification_log", "{{route('office.communication.no
 <!--begin::Custom Javascript(used by this page)-->
 <script src="{{asset('js/cleave.min.js')}}"></script>
 <script src="{{asset('js/toastify.js')}}"></script>
-<script src="{{asset('js/language.js')}}"></script>
+<script src="{{asset('js/language-office.js')}}"></script>
 <script src="{{asset('js/notification.js')}}"></script>
 <script src="{{asset('js/plugins-office.js')}}"></script>
 <script src="{{asset('js/methods-office.js')}}"></script>

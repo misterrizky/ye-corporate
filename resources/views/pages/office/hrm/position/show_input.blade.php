@@ -76,38 +76,21 @@
                                                         </td>
                                                     </tr>
                                                     @foreach ($modules as $item)
+                                                    @php
+                                                    $role = \App\Models\HRM\RolePermission::where('permission_id',$item->id)->where('role_id',$position->id)->get()->count();
+                                                    $role = $role > 0 ? \App\Models\HRM\RolePermission::where('permission_id',$item->id)->where('role_id',$position->id)->first()->permission_id : 0;
+                                                    @endphp
                                                     <tr>
-                                                        <td class="text-gray-800">{{$item->name}}</td>
-                                                        @if($item->privileges->count() > 0)
+                                                        <td class="text-gray-800">{{Str::before($item->name,'-')}}</td>
                                                         <td>
                                                             <div class="d-flex">
-                                                                @foreach($item->privileges as $p)
                                                                 <label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
-                                                                    <input class="form-check-input" type="checkbox" value="" name="user_management_write" />
-                                                                    <span class="form-check-label">{{$p->name}}</span>
+                                                                    <input class="form-check-input" type="checkbox" value="{{$item->id}}" name="permission[]" {{$item->id == $role ? 'checked' :''}} />
+                                                                    <span class="form-check-label">{{Str::after($item->name,'-')}}</span>
                                                                 </label>
-                                                                @endforeach
                                                             </div>
                                                         </td>
-                                                        @endif
                                                     </tr>
-                                                        @foreach($item->modules as $type)
-                                                        <tr>
-                                                            <td class="text-gray-800">{{$type->name}}</td>
-                                                            @if($type->privileges->count() > 0)
-                                                            <td>
-                                                                <div class="d-flex">
-                                                                    @foreach($type->privileges as $privilege)
-                                                                    <label class="form-check form-check-custom form-check-solid me-5 me-lg-20">
-                                                                        <input class="form-check-input" type="checkbox" value="" name="user_management_write" />
-                                                                        <span class="form-check-label">{{$privilege->name}}</span>
-                                                                    </label>
-                                                                    @endforeach
-                                                                </div>
-                                                            </td>
-                                                            @endif
-                                                        </tr>
-                                                        @endforeach
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -116,7 +99,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button id="tombol_simpan" onclick="handle_upload('#tombol_simpan','#form_input','{{$data->id ? route('office.hrm.position.update',$data->id) : route('office.hrm.position.store')}}','{{$data->id ? 'PATCH' : 'POST'}}');" class="btn btn-sm btn-{{$data->id ? 'warning' : 'success'}}">
+                                <button id="tombol_simpan" onclick="handle_upload('#tombol_simpan','#form_input','{{$data->id ? route('office.hrm.role.update',$data->id) : route('office.hrm.role.store')}}','{{$data->id ? 'PATCH' : 'POST'}}');" class="btn btn-sm btn-{{$data->id ? 'warning' : 'success'}}">
                                     {{$data->id ? 'Update' : 'Save'}}
                                 </button>
                                 @if($data->id)

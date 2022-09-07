@@ -94,8 +94,8 @@
                             <path d="M9.2 3H3C2.4 3 2 3.4 2 4V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V7C22 6.4 21.6 6 21 6H12L10.4 3.60001C10.2 3.20001 9.7 3 9.2 3Z" fill="currentColor" />
                         </svg>
                     </span>
-                    <input type="text" name="code" placeholder="Enter the code" class="form-control mw-250px me-3" />
-                    <input type="text" name="name" placeholder="Enter the name" class="form-control mw-250px me-3" />
+                    <input type="text" name="code" placeholder="Enter the folder code" class="form-control mw-250px me-3" />
+                    <input type="text" name="name" placeholder="Enter the folder name" class="form-control mw-250px me-3" />
                     <button class="btn btn-icon btn-light-primary me-3" id="tombol_simpan" onclick="save('#tombol_simpan','#form_input','{{route('office.corporate.document-type.store')}}','POST');">
                         <span class="indicator-label">
                             <span class="svg-icon svg-icon-1">
@@ -207,16 +207,15 @@
 
                 },
                 success: function(response) {
-                    toastify_message(response.message);
+                    $(form)[0].reset();
                     $(tombol).removeAttr("data-kt-indicator");
-                    if (response.alert == "success") {
-                        $(form)[0].reset();
-                        load_url("{{route('office.corporate.document-type.index')}}");
-                    } else {
-                        setTimeout(function() {
-                            $(tombol).prop("disabled", false);
-                        }, 2000);
-                    }
+                    $(tombol).prop("disabled", false);
+                    handle_success(response);
+                },
+                error: function(xhr) {
+                    $(tombol).removeAttr("data-kt-indicator");
+                    $(tombol).prop("disabled", false);
+                    handle_error(xhr);
                 },
             });
             return false;

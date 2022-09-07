@@ -8,10 +8,19 @@ use App\Models\CRM\ContactGroup;
 use App\Models\CRM\LeadActivity;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Master\CompanyIndustry;
 use Illuminate\Support\Facades\Validator;
 
 class LeadController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:leads-list|leads-create|leads-edit|leads-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:leads-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:leads-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:leads-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -23,60 +32,36 @@ class LeadController extends Controller
     public function create()
     {
         $collection = Lead::get();
+        $industry = CompanyIndustry::get();
         $group = ContactGroup::get();
-        return view('pages.office.crm.lead.input', ['data' => new Lead, 'collection' => $collection, 'group' => $group]);
+        return view('pages.office.crm.lead.input', ['data' => new Lead, 'collection' => $collection, 'group' => $group, 'industry' => $industry]);
     }
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'company_name' => 'required',
             'group' => 'required',
+            'industry' => 'required',
             'name' => 'required',
             'phone' => 'required|unique:leads,phone',
             'email' => 'required|unique:leads,email',
             'notes' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('company_name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('company_name'),
-                ]);
-            }elseif ($errors->has('group')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('group'),
-                ]);
-            }elseif ($errors->has('name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }elseif ($errors->has('phone')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('phone'),
-                ]);
-            }elseif ($errors->has('email')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('email'),
-                ]);
-            }elseif ($errors->has('notes')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('notes'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $lead = new Lead;
         $lead->employee_id = Auth::guard('employees')->user()->id;
         $lead->contact_group_id = $request->group;
+        $lead->company_industry_id = $request->industry;
         $lead->company_name = $request->company_name;
         $lead->name = $request->name;
         $lead->phone = $request->phone;
         $lead->email = $request->email;
+        $lead->address = $request->address;
         $lead->notes = $request->notes;
         $lead->save();
         return response()->json([
@@ -96,58 +81,33 @@ class LeadController extends Controller
     public function edit(Lead $lead)
     {
         $collection = Lead::get();
+        $industry = CompanyIndustry::get();
         $group = ContactGroup::get();
-        return view('pages.office.crm.lead.input', ['data' => $lead, 'collection' => $collection, 'group' => $group]);
+        return view('pages.office.crm.lead.input', ['data' => $lead, 'collection' => $collection, 'group' => $group, 'industry' => $industry]);
     }
     public function update(Request $request, Lead $lead)
     {
         $validator = Validator::make($request->all(), [
             'company_name' => 'required',
             'group' => 'required',
+            'industry' => 'required',
             'name' => 'required',
             'phone' => 'required|unique:leads,phone,'.$lead->id,
             'email' => 'required|unique:leads,email,'.$lead->id,
             'notes' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('company_name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('company_name'),
-                ]);
-            }elseif ($errors->has('group')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('group'),
-                ]);
-            }elseif ($errors->has('name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }elseif ($errors->has('phone')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('phone'),
-                ]);
-            }elseif ($errors->has('email')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('email'),
-                ]);
-            }elseif ($errors->has('notes')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('notes'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $lead->contact_group_id = $request->group;
         $lead->company_name = $request->company_name;
         $lead->name = $request->name;
         $lead->phone = $request->phone;
         $lead->email = $request->email;
+        $lead->address = $request->address;
         $lead->notes = $request->notes;
         $lead->update();
         return response()->json([

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->date('due_at')->nullable();
             $table->enum('st',['Pending','On Going','Finish'])->default('Pending')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('project_quotations', function (Blueprint $table) {
             $table->id();
@@ -39,6 +40,7 @@ return new class extends Migration
             $table->date('date')->nullable();
             $table->enum('st',['Pending','Rejected','Accepted'])->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('project_mous', function (Blueprint $table) {
             $table->id();
@@ -50,6 +52,7 @@ return new class extends Migration
             $table->string('client_sign')->nullable();
             $table->string('company_sign')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('project_invoices', function (Blueprint $table) {
             $table->id();
@@ -68,6 +71,7 @@ return new class extends Migration
             $table->boolean('is_late_fee');
             $table->timestamp('received_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('project_invoice_details', function (Blueprint $table) {
             $table->id();
@@ -77,6 +81,7 @@ return new class extends Migration
             $table->float('qty',20,0)->default(0);
             $table->float('price',20,0)->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('project_spends', function (Blueprint $table) {
             $table->id();
@@ -87,6 +92,7 @@ return new class extends Migration
             $table->integer('created_by')->default(0);
             $table->enum('st',['Pending','Accepted','Rejected'])->default('Pending');
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('project_mohs', function (Blueprint $table) {
             $table->id();
@@ -99,6 +105,7 @@ return new class extends Migration
             $table->string('company_sign')->nullable();
             $table->enum('st',['Pending','Accepted'])->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('project_galleries', function (Blueprint $table) {
             $table->id();
@@ -107,6 +114,7 @@ return new class extends Migration
             $table->string('file');
             $table->enum('st',['Progress','Revision','Result'])->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('project_reviews', function (Blueprint $table) {
             $table->id();
@@ -116,6 +124,7 @@ return new class extends Migration
             $table->string('review');
             $table->float('rate',2,1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

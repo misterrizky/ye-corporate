@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Validator;
 
 class ProvinceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:province-list|province-create|province-edit|province-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:province-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:province-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:province-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -30,19 +38,11 @@ class ProvinceController extends Controller
             'code' => 'required|unique:provinces,id',
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $province = new Province;
         $province->country_id = $request->country_id;
@@ -73,19 +73,11 @@ class ProvinceController extends Controller
             'code' => 'required|unique:provinces,id,'.$province->id,
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $province->country_id = $request->country_id;
         $province->id = $request->code;
@@ -121,5 +113,14 @@ class ProvinceController extends Controller
     public function show_edit(Province $province, Regency $regency)
     {
         return view('pages.office.regional.province.show_input', ['data' => $regency, 'province' => $province]);
+    }
+    public function get_list(Request $request)
+    {
+        $collection = Regency::where('province_id',$request->province)->get();
+        $list = "<option value=''>Choose Regency</option>";
+        foreach($collection as $row){
+            $list .= "<option value='$row->id'>$row->name</option>";
+        }
+        return $list;
     }
 }

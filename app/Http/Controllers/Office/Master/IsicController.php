@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 class IsicController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:isic-list|isic-create|isic-edit|isic-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:isic-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:isic-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:isic-delete', ['only' => ['destroy']]);
+    }
     public function index()
     {
         //
@@ -24,19 +32,11 @@ class IsicController extends Controller
             'code' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }else if($errors->has('code')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $isic = new Isic;
         $isic->isic_type_id = $request->isic_type_id;   
@@ -63,20 +63,12 @@ class IsicController extends Controller
             'code' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }else if($errors->has('code')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }
-        }  
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
+        }
         $isic->name = $request->name;
         $isic->code = $request->code;
         $isic->save();

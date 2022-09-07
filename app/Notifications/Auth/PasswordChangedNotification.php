@@ -27,7 +27,7 @@ class PasswordChangedNotification extends Notification
         return [
             'tipe' => 'Password Changed',
             'nama' => $notifiable->name,
-            'pesan' => "Hi ".$notifiable->name.", Sorry to hear you’re having trouble logging into ".config('app.name').". We got a message that you forgot your password."
+            'pesan' => "Hi ".$notifiable->name.", Your password was just changed. If you didn't change your password, please contact our support team. Your security is very important to us!"
         ];
     }
 }

@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class LegalDocTypeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:docType-list|docType-create|docType-edit|docType-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:docType-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:docType-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:docType-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -24,36 +32,26 @@ class LegalDocTypeController extends Controller
     }
     public function store(Request $request)
     {
-        if($request->id){
+        if($request->has('id')){
             $documentType = LegalDocType::where('id',$request->id)->first();
+            $validator = Validator::make($request->all(), [
+                'code' => 'required',
+                'name' => 'required',
+            ]);
         }else{
             $documentType = new LegalDocType;
-        }
-        if($request->id){
             $validator = Validator::make($request->all(), [
-                'code' => 'required|unique:legal_doc_types,code,'.$documentType->id,
-                'name' => 'required',
-            ]);
-        }else{
-            $validator = Validator::make($request->all(), [
-                'code' => 'required|unique:legal_doc_types,code',
+                'code' => 'required',
                 'name' => 'required',
             ]);
         }
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }elseif ($errors->has('name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
+        $documentType->doc_type_id = $request->type ?? 0;
         $documentType->code = $request->code;
         $documentType->name = $request->name;
         $documentType->save();
@@ -88,12 +86,13 @@ class LegalDocTypeController extends Controller
     }
     public function list(Request $request)
     {
-        $collection = LegalDocType::where('code','LIKE','%'.$request->keyword.'%')->orWhere('name','LIKE','%'.$request->keyword.'%')->orderBy('code','ASC')->get();
+        $collection = LegalDocType::where('doc_type_id',0)->where('code','LIKE','%'.$request->keyword.'%')->orderBy('code','ASC')->get();
         return view('pages.office.corporate.document-type.list',compact('collection'));
     }
     public function show_list(Request $request, LegalDocType $documentType)
     {
-        $collection = LegalDoc::where('doc_type_id',$documentType->id)->where('code','LIKE','%'.$request->keyword.'%')->get();
-        return view('pages.office.corporate.document-type.show_list',compact('collection','documentType'));
+        $collections = LegalDocType::with('parent')->where('doc_type_id',$documentType->id)->where('code','LIKE','%'.$request->keyword.'%')->orderBy('code','ASC')->get();
+        $collection = LegalDoc::where('doc_type_id',$documentType->id)->where('code','LIKE','%'.$request->keyword.'%')->orderBy('code','ASC')->get();
+        return view('pages.office.corporate.document-type.show_list',compact('collections','collection','documentType'));
     }
 }

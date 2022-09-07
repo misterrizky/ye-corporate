@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class IsicTypeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:employee-list|employee-create|employee-edit|employee-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:employee-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:employee-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:employee-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -28,14 +36,11 @@ class IsicTypeController extends Controller
             'name' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $isicType = new IsicType;
         $isicType->name = $request->name;
@@ -63,14 +68,11 @@ class IsicTypeController extends Controller
             'name' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $isicType->name = $request->name;
         $isicType->update();

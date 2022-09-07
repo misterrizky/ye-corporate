@@ -114,6 +114,12 @@ function obj_date(obj) {
         dateFormat: "Y-m-d",
     });
 }
+function obj_birthdate(obj) {
+    $("#" + obj).flatpickr({
+        dateFormat: "Y-m-d",
+        maxDate: new Date().fp_incr(-6209)
+    });
+}
 
 function obj_year(obj) {
     $("#" + obj).flatpickr({

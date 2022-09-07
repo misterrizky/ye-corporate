@@ -25,7 +25,7 @@
 <!--begin::Body-->
 <div class="py-20">
     <!--begin::Form-->
-    <form class="form w-100" novalidate="novalidate" id="kt_password_reset_form" data-kt-redirect-url="../../demo1/dist/authentication/layouts/fancy/new-password.html" action="#">
+    <form class="form w-100" novalidate="novalidate" id="form_reset" data-kt-redirect-url="dashboard">
         <!--begin::Heading-->
         <div class="text-start mb-10">
             <!--begin::Title-->
@@ -38,14 +38,14 @@
         <!--begin::Heading-->
         <!--begin::Input group-->
         <div class="fv-row mb-10">
-            <input class="form-control form-control-solid" type="email" placeholder="Email" name="email" autocomplete="off" data-kt-translate="password-reset-input-email" />
+            <input class="form-control form-control-solid" type="email" placeholder="Email" id="email" name="email" autocomplete="off" data-kt-translate="password-reset-input-email" data-reset="1" data-validation="We need to know your email" data-kt-validation="validation-email" data-format="Please input email correctly" />
         </div>
         <!--end::Input group-->
         <!--begin::Actions-->
         <div class="d-flex flex-stack">
             <!--begin::Link-->
             <div class="m-0">
-                <button id="kt_password_reset_submit" class="btn btn-primary me-2" data-kt-translate="password-reset-submit">
+                <button id="tombol_reset" onclick="handle_post('#tombol_reset','#form_reset','{{route('office.auth.doforgot')}}','POST');" class="btn btn-primary me-2" data-kt-translate="password-reset-submit" data-reset="2">
                     <!--begin::Indicator label-->
                     <span class="indicator-label">Submit</span>
                     <!--end::Indicator label-->
@@ -64,4 +64,5 @@
 </div>
 <!--end::Body-->
 <script>
+    $("#email").focus();
 </script>

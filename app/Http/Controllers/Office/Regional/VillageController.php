@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 class VillageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:employee-list|employee-create|employee-edit|employee-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:employee-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:employee-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:employee-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -27,19 +35,11 @@ class VillageController extends Controller
             'code' => 'required|unique:villages,id',
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $village = new Village;
         $village->district_id = $request->district_id;
@@ -65,19 +65,11 @@ class VillageController extends Controller
             'code' => 'required|unique:villages,id,'.$village->id,
             'name' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $village->district_id = $request->district_id;
         $village->id = $request->code;

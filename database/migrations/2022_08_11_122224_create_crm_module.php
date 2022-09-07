@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('company_industries', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable()->comment('input type text');
+            $table->softDeletes();
         });
         Schema::create('contact_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable()->comment('input type text');
+            $table->softDeletes();
         });
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
@@ -33,6 +35,7 @@ return new class extends Migration
             $table->longText('address')->nullable()->comment('textarea');
             $table->longText('notes')->nullable()->comment('textarea');
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('lead_activities', function (Blueprint $table) {
             $table->id();
@@ -44,6 +47,7 @@ return new class extends Migration
             $table->enum('st',['Pending','On Going','Completed'])->default('Pending');
             $table->timestamp('completed_at');
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
@@ -75,6 +79,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->timestamp('last_seen')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('client_activities', function (Blueprint $table) {
             $table->id();
@@ -86,6 +91,7 @@ return new class extends Migration
             $table->enum('st',['Pending','On Going','Completed'])->default('Pending');
             $table->timestamp('completed_at');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

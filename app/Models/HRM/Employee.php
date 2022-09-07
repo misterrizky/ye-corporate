@@ -4,13 +4,15 @@ namespace App\Models\HRM;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Employee extends Authenticatable
 {
-    use HasFactory,Notifiable;
+    use HasFactory,HasRoles,Notifiable,SoftDeletes;
     protected $fillable = [
         'name',
         'phone',

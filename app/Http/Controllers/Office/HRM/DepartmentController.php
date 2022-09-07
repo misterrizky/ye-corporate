@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class DepartmentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:department-list|department-create|department-edit|department-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:department-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:department-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:department-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -28,19 +36,11 @@ class DepartmentController extends Controller
             'name' => 'required|unique:departments,name',
             'desc' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }elseif ($errors->has('desc')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('desc'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $department = new Department;
         $department->name = $request->name;
@@ -69,19 +69,11 @@ class DepartmentController extends Controller
             'name' => 'required|unique:departments,name,'.$department->id,
             'desc' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }elseif ($errors->has('desc')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('desc'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $department->name = $request->name;
         $department->desc = $request->desc;

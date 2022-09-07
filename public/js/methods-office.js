@@ -25,9 +25,9 @@ $(document).ready(function() {
         $('.paginasi').removeClass('active');
         $(this).parent('.paginasi').addClass('active');
         // var myurl = $(this).attr('href');
+        var uri = $(this).attr('halaman').split('?')[0];
         page = $(this).attr('halaman').split('page=')[1];
-        var uri = window.location.href;
-        load_list(uri+'/list',page);
+        load_list(uri,page);
     });
     $(document).on('click', 'a.sidebar-link', function(event) {
         $('a.sidebar-link').removeClass('active');
@@ -54,7 +54,9 @@ function load_main(url){
     $.get(url,{}, function(result) {
         loaded();
         $('#main-content').html(result);
-    }, "html");
+    }, "html").fail(function() {
+        // location.href = url;
+    });
 }
 function load_list(url,page){
     $.get(url + '?page=' + page, $('#content_filter').serialize(), function(result) {
@@ -101,16 +103,19 @@ function save_memo(tombol, form, url, method){
 
             },
             success: function(response) {
-                toastify_message(response.message);
+                $(form)[0].reset();
                 $(tombol).removeAttr("data-kt-indicator");
-                if (response.alert == "success") {
-                    $(form)[0].reset();
-                    load_memo(localStorage.getItem("route_memo"))
-                } else {
-                    setTimeout(function() {
-                        $(tombol).prop("disabled", false);
-                    }, 2000);
+                $(tombol).prop("disabled", false);
+                if(response.alert == "success"){
+                    handle_success(response);
+                }else{
+                    toastify_message(response.message);
                 }
+            },
+            error: function(xhr) {
+                $(tombol).removeAttr("data-kt-indicator");
+                $(tombol).prop("disabled", false);
+                handle_error(xhr);
             },
         });
         return false;
@@ -138,10 +143,15 @@ function delete_memo(title, confirm_title, deny_title, method, route){
                 url: route,
                 dataType: 'json',
                 success: function(response) {
-                    loaded();
-                    toastify_message(response.message);
-                    load_memo(localStorage.getItem("route_memo"))
-                }
+                    if(response.alert == "success"){
+                        handle_success(response);
+                    }else{
+                        toastify_message(response.message);
+                    }
+                },
+                error: function(xhr) {
+                    handle_error(xhr);
+                },
             });
         } else if (result.isDenied) {
             toastify_message("You cancel this confirmation");
@@ -191,24 +201,19 @@ function handle_save(tombol, form, url, method){
 
         },
         success: function(response) {
-            toastify_message(response.message);
-            if (response.alert == "success") {
-                $(form)[0].reset();
-                $(tombol).prop("disabled", false);
-                if(response.redirect == "input"){
-                    load_input(response.route);
-                }else if(response.redirect == "reload"){
-                    location.reload();
-                }else{
-                    setTimeout(function() {
-                        load_main(window.location.href,1);
-                    }, 2000);
-                }
-            } else {
-                setTimeout(function() {
-                    $(tombol).prop("disabled", false);
-                }, 2000);
+            $(form)[0].reset();
+            $(tombol).removeAttr("data-kt-indicator");
+            $(tombol).prop("disabled", false);
+            if(response.alert == "success"){
+                handle_success(response);
+            }else{
+                toastify_message(response.message);
             }
+        },
+        error: function(xhr) {
+            $(tombol).removeAttr("data-kt-indicator");
+            $(tombol).prop("disabled", false);
+            handle_error(xhr);
         },
     });
 }
@@ -234,19 +239,15 @@ function handle_confirm(title, confirm_title, deny_title, method, route){
                 url: route,
                 dataType: 'json',
                 success: function(response) {
-                    loaded();
-                    if(response.redirect == "cart"){
-                        load_cart(localStorage.getItem("route_cart"));
-                    }else if(response.redirect == "reload"){
-                        location.reload();
-                    }else if(response.redirect == "main"){
-                        load_url(response.route);
+                    if(response.alert == "success"){
+                        handle_success(response);
                     }else{
-                        load_main(window.location.href);
+                        toastify_message(response.message);
                     }
-                    toastify_message(response.message);
-                    // custom_message(response.alert,response.message);
-                }
+                },
+                error: function(xhr) {
+                    handle_error(xhr);
+                },
             });
         } else if (result.isDenied) {
             toastify_message("You cancel this confirmation");
@@ -276,15 +277,15 @@ function handle_confirm_checked(title, confirm_title, deny_title, method, route)
                     data: {id: id},
                     dataType: 'json',
                     success: function(response) {
-                        if(response.redirect == "cart"){
-                            load_cart(localStorage.getItem("route_cart"));
-                        }else if(response.redirect == "reload"){
-                            location.reload();
+                        if(response.alert == "success"){
+                            handle_success(response);
                         }else{
-                            load_main(window.location.href);
+                            toastify_message(response.message);
                         }
-                        Swal.fire(response.message, '', response.alert)
-                    }
+                    },
+                    error: function(xhr) {
+                        handle_error(xhr);
+                    },
                 });
             }
         } else if (result.isDenied) {
@@ -312,25 +313,19 @@ function handle_upload(tombol, form, url, method){
 
             },
             success: function(response) {
-                toastify_message(response.message);
                 $(tombol).removeAttr("data-kt-indicator");
-                if (response.alert == "success") {
+                $(tombol).prop("disabled", false);
+                if(response.alert == "success"){
                     $(form)[0].reset();
-                    if(response.redirect == "input"){
-                        load_input(response.route);
-                    }else if(response.redirect == "reload"){
-                        location.reload();
-                    }else{
-                        setTimeout(function() {
-                            load_main(window.location.href);
-                        }, 2000);
-                    }
-                    $("#customModal").modal('hide');
-                } else {
-                    setTimeout(function() {
-                        $(tombol).prop("disabled", false);
-                    }, 2000);
+                    handle_success(response);
+                }else{
+                    toastify_message(response.message);
                 }
+            },
+            error: function(xhr) {
+                $(tombol).removeAttr("data-kt-indicator");
+                $(tombol).prop("disabled", false);
+                handle_error(xhr);
             },
         });
         return false;
@@ -422,4 +417,32 @@ function handle_download(tombol,url){
         $(tombol).prop("disabled", false);
         $(tombol).removeAttr("data-kt-indicator");
     }, "json");
+}
+function handle_success(response){
+    loaded();
+    if(response.redirect == "input"){
+        load_input(response.route);
+    }else if(response.redirect == "reload"){
+        toastify_message(response.message);
+        setTimeout(function() {
+            load_main(window.location.href);
+        }, 1000);
+    }else if(response.redirect == "main"){
+        toastify_message(response.message);
+        setTimeout(function() {
+            load_list(response.route,1);
+        },1000);
+    }else if(response.redirect == "cart"){
+        load_cart(localStorage.getItem("route_cart"));
+    }else if(response.redirect == "memo"){
+        load_memo(localStorage.getItem("route_memo"));
+    }else{
+        toastify_message(response.message);
+        setTimeout(function() {
+            load_main(window.location.href);
+        }, 1000);
+    }
+}
+function handle_error(result){
+    toastify_message(result.responseJSON.message);
 }

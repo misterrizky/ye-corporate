@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:event-list|event-create|event-edit|event-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:event-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:event-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:event-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -40,7 +48,7 @@ class EventController extends Controller
             return response()->json([
                 'alert' => 'error',
                 'message' => $validator->errors()->first(),
-            ], 401);
+            ], 200);
         }
 
         $event = new Event();

@@ -19,11 +19,13 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->boolean('is_activated');
             $table->string('thumbnail')->nullable();
+            $table->softDeletes();
         });
         Schema::create('changelogs', function (Blueprint $table) {
             $table->id();
             $table->longText('name');
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('changelog_details', function (Blueprint $table) {
             $table->id();
@@ -32,6 +34,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('url')->nullable();
             $table->enum('type',['New','Update','Fix'])->default('New');
+            $table->softDeletes();
         });
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
@@ -47,6 +50,7 @@ return new class extends Migration
             $table->string('facebook_url')->nullable();
             $table->string('twitter_url')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('company_addresses', function (Blueprint $table) {
             $table->id();
@@ -60,6 +64,8 @@ return new class extends Migration
             $table->bigInteger('village_id')->default(0);
             $table->string('postcode',5)->nullable();
             $table->boolean('is_primary');
+            $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('company_bank_accounts', function (Blueprint $table) {
             $table->id();
@@ -68,6 +74,7 @@ return new class extends Migration
             $table->string('account_number')->unique();
             $table->integer('branch_name')->default(0);
             $table->boolean('is_primary');
+            $table->softDeletes();
         });
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
@@ -75,45 +82,41 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('banner')->nullable();
             $table->enum('type',['about','visi_misi','what_we_do','our_strategy','why_choose_us','our_process','join_team','what_makes_us_different'])->nullable();
+            $table->softDeletes();
         });
         Schema::create('days', function (Blueprint $table) {
             $table->id();
-        });
-        Schema::create('directories', function (Blueprint $table) {
-            $table->id();
-            $table->integer('directory_id')->default(0);
-            $table->string('name');
-            $table->timestamps();
-        });
-        Schema::create('directory_files', function (Blueprint $table) {
-            $table->id();
-            $table->integer('directory_id')->default(0);
-            $table->string('file');
         });
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->integer('employee_id')->default(0);
             $table->longText('name');
             $table->longText('description')->nullable();
+            $table->string('type')->nullable();
+            $table->longText('url')->nullable();
             $table->timestamp('start_at')->nullable();
             $table->timestamp('end_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('faq_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->softDeletes();
         });
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
             $table->integer('faq_category_id')->default(0);
             $table->longText('question');
             $table->longText('answer');
+            $table->softDeletes();
         });
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
             $table->string('description')->nullable();
             $table->string('year',4)->nullable();
+            $table->softDeletes();
         });
         Schema::create('inbox', function (Blueprint $table) {
             $table->id();
@@ -124,32 +127,40 @@ return new class extends Migration
             // $table->string('phone',15);
             $table->longText('messages');
             $table->timestamp('created_at');
+            $table->timestamp('read_at')->nullable();
+            $table->softDeletes();
         });
         Schema::create('isic_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->softDeletes();
         });
         Schema::create('isics', function (Blueprint $table) {
             $table->id();
             $table->integer('isic_type_id')->default(0);
             $table->string('code');
             $table->string('name');
+            $table->softDeletes();
         });
         Schema::create('legal_docs', function (Blueprint $table) {
             $table->id();
             $table->integer('doc_type_id')->default(0);
             $table->string('code');
             $table->string('attachment');
+            $table->softDeletes();
         });
         Schema::create('legal_doc_types', function (Blueprint $table) {
             $table->id();
+            $table->integer('doc_type_id')->default(0);
             $table->string('code',10);
             $table->string('name');
+            $table->softDeletes();
         });
         Schema::create('legal_policies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->longText('body');
+            $table->softDeletes();
         });
         Schema::create('mail_configs', function (Blueprint $table) {
             $table->id();
@@ -177,7 +188,7 @@ return new class extends Migration
             $table->unsignedInteger('order_column')->nullable();
             $table->nullableTimestamps();
         });
-        Schema::create('newsletter', function (Blueprint $table) {
+        Schema::create('newsletters', function (Blueprint $table) {
             $table->id();
             $table->string('email')->nullable();
             $table->timestamps();
@@ -197,8 +208,6 @@ return new class extends Migration
         Schema::dropIfExists('company_bank_accounts');
         Schema::dropIfExists('contents');
         Schema::dropIfExists('days');
-        Schema::dropIfExists('directories');
-        Schema::dropIfExists('directory_files');
         Schema::dropIfExists('events');
         Schema::dropIfExists('faq_categories');
         Schema::dropIfExists('faqs');
@@ -211,6 +220,6 @@ return new class extends Migration
         Schema::dropIfExists('legal_policies');
         Schema::dropIfExists('mail_configs');
         Schema::dropIfExists('media');
-        Schema::dropIfExists('newsletter');
+        Schema::dropIfExists('newsletters');
     }
 };

@@ -2,27 +2,38 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Office\AuthController;
+use App\Http\Controllers\Office\ProfileController;
 use App\Http\Controllers\Office\CRM\LeadController;
+use App\Http\Controllers\Office\HRM\RoleController;
 use App\Http\Controllers\Office\DashboardController;
 use App\Http\Controllers\Office\CRM\ClientController;
 use App\Http\Controllers\Office\Master\BankController;
 use App\Http\Controllers\Office\Master\IsicController;
+use App\Http\Controllers\Office\Support\FaqController;
 use App\Http\Controllers\Office\HRM\EmployeeController;
 use App\Http\Controllers\Office\HRM\PositionController;
 use App\Http\Controllers\Office\Master\EventController;
+use App\Http\Controllers\Office\Corporate\KpiController;
 use App\Http\Controllers\Office\CRM\NewsletterController;
 use App\Http\Controllers\Office\HRM\DepartmentController;
-use App\Http\Controllers\Office\Setting\ModuleController;
+use App\Http\Controllers\Office\HRM\PermissionController;
+use App\Http\Controllers\Office\HRM\VacancyJobController;
 use App\Http\Controllers\Office\Master\IsicTypeController;
 use App\Http\Controllers\Office\CRM\ContactGroupController;
 use App\Http\Controllers\Office\HRM\EmployeeMemoController;
+use App\Http\Controllers\Office\HRM\JobApplicantController;
 use App\Http\Controllers\Office\Regional\CountryController;
 use App\Http\Controllers\Office\Regional\RegencyController;
 use App\Http\Controllers\Office\Regional\VillageController;
+use App\Http\Controllers\Office\Corporate\HistoryController;
 use App\Http\Controllers\Office\Regional\DistrictController;
 use App\Http\Controllers\Office\Regional\ProvinceController;
 use App\Http\Controllers\Office\Corporate\LegalDocController;
+use App\Http\Controllers\Office\Support\FaqCategoryController;
+use App\Http\Controllers\Office\Corporate\LegalPolicyController;
+use App\Http\Controllers\Office\Corporate\KpiObjectiveController;
 use App\Http\Controllers\Office\Corporate\LegalDocTypeController;
+use App\Http\Controllers\Office\Master\CompanyIndustryController;
 use App\Http\Controllers\Office\Communication\NotificationController;
 
 Route::group(['domain' => ''], function() {
@@ -38,15 +49,18 @@ Route::group(['domain' => ''], function() {
             Route::get('reset/{token}',[AuthController::class, 'reset'])->name('reset');
             Route::post('reset',[AuthController::class, 'do_reset'])->name('do_reset');
         });
+        Route::name('email.')->group(function(){
+            Route::get('email/welcome', function () {
+                return view('email.auth.welcome');
+            });
+            Route::get('email/reset', function () {
+                return view('email.auth.reset_password');
+            });
+            // Route::get('welcome', [DashboardController::class, 'ecommerce'])->name('ecommerce');
+        });
         Route::middleware(['auth:employees'])->group(function(){
             Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
             Route::resource('employee-memo',EmployeeMemoController::class);
-            Route::name('email.')->group(function(){
-                Route::get('email/welcome', function () {
-                    return view('email.welcome');
-                });
-                // Route::get('welcome', [DashboardController::class, 'ecommerce'])->name('ecommerce');
-            });
             Route::name('communication.')->group(function(){
                 Route::get('notification', [NotificationController::class, 'index'])->name('notification');
                 Route::get('notification_log', [NotificationController::class, 'log'])->name('notification_log');
@@ -71,6 +85,8 @@ Route::group(['domain' => ''], function() {
                 Route::get('isic-type/{isicType}/{isic}/show-edit',[IsicTypeController::class, 'show_edit'])->name('isic-type.show_edit');
                 Route::resource('isic-type', IsicTypeController::class);
                 Route::resource('isic', IsicController::class);
+                Route::get('company-industry/list', [CompanyIndustryController::class, 'list'])->name('company-industry.list');
+                Route::resource('company-industry',CompanyIndustryController::class);
             });
             Route::name('regional.')->group(function(){
                 Route::get('country/list',[CountryController::class, 'list'])->name('country.list');
@@ -78,16 +94,19 @@ Route::group(['domain' => ''], function() {
                 Route::get('country/{country}/show-create',[CountryController::class, 'show_create'])->name('country.show_create');
                 Route::get('country/{country}/{province}/show-edit',[CountryController::class, 'show_edit'])->name('country.show_edit');
                 Route::resource('country', CountryController::class);
+                Route::post('province/get-list',[ProvinceController::class, 'get_list'])->name('province.get_list');
                 Route::get('province/list',[ProvinceController::class, 'list'])->name('province.list');
                 Route::get('province/{province}/show-list',[ProvinceController::class, 'show_list'])->name('province.show_list');
                 Route::get('province/{province}/show-create',[ProvinceController::class, 'show_create'])->name('province.show_create');
                 Route::get('province/{province}/{regency}/show-edit',[ProvinceController::class, 'show_edit'])->name('province.show_edit');
                 Route::resource('province', ProvinceController::class);
+                Route::post('regency/get-list',[RegencyController::class, 'get_list'])->name('regency.get_list');
                 Route::get('regency/list',[RegencyController::class, 'list'])->name('regency.list');
                 Route::get('regency/{regency}/show-list',[RegencyController::class, 'show_list'])->name('regency.show_list');
                 Route::get('regency/{regency}/show-create',[RegencyController::class, 'show_create'])->name('regency.show_create');
                 Route::get('regency/{regency}/{district}/show-edit',[RegencyController::class, 'show_edit'])->name('regency.show_edit');
                 Route::resource('regency', RegencyController::class);
+                Route::post('district/get-list',[DistrictController::class, 'get_list'])->name('district.get_list');
                 Route::get('district/list',[DistrictController::class, 'list'])->name('district.list');
                 Route::get('district/{district}/show-list',[DistrictController::class, 'show_list'])->name('district.show_list');
                 Route::get('district/{district}/show-create',[DistrictController::class, 'show_create'])->name('district.show_create');
@@ -108,11 +127,22 @@ Route::group(['domain' => ''], function() {
                 Route::get('position/{position}/show-create',[PositionController::class, 'show_create'])->name('position.show_create');
                 Route::get('position/{position}/{permission}/show-edit',[PositionController::class, 'show_edit'])->name('position.show_edit');
                 Route::resource('position', PositionController::class);
+                Route::post('role/save',[RoleController::class, 'store'])->name('role.store');
                 Route::get('employee/list',[EmployeeController::class, 'list'])->name('employee.list');
                 Route::get('employee/{employee}/show-list',[EmployeeController::class, 'show_list'])->name('employee.show_list');
                 Route::get('employee/{employee}/show-create',[EmployeeController::class, 'show_create'])->name('employee.show_create');
                 Route::get('employee/{employee}/{permission}/show-edit',[EmployeeController::class, 'show_edit'])->name('employee.show_edit');
                 Route::resource('employee', EmployeeController::class);
+                Route::get('vacancy/list',[VacancyJobController::class, 'list'])->name('vacancy.list');
+                Route::get('vacancy/{vacancy}/show-list',[VacancyJobController::class, 'show_list'])->name('vacancy.show_list');
+                Route::get('vacancy/{vacancy}/show-create',[VacancyJobController::class, 'show_create'])->name('vacancy.show_create');
+                Route::get('vacancy/{vacancy}/{applicant}/show-edit',[VacancyJobController::class, 'show_edit'])->name('vacancy.show_edit');
+                Route::patch('vacancy/{vacancy}/open',[VacancyJobController::class, 'open'])->name('vacancy.open');
+                Route::patch('vacancy/{vacancy}/close',[VacancyJobController::class, 'close'])->name('vacancy.close');
+                Route::resource('vacancy', VacancyJobController::class);
+                Route::patch('applicant/{applicant}/accept',[JobApplicantController::class, 'accept'])->name('applicant.accept');
+                Route::patch('applicant/{applicant}/reject',[JobApplicantController::class, 'reject'])->name('applicant.reject');
+                Route::resource('applicant', JobApplicantController::class);
             });
             Route::name('crm.')->group(function(){
                 Route::resource('contact-group', ContactGroupController::class);
@@ -130,13 +160,67 @@ Route::group(['domain' => ''], function() {
                 Route::get('document-type/{documentType}/{document}/show-edit',[LegalDocTypeController::class, 'show_edit'])->name('document-type.show_edit');
                 Route::resource('document-type',LegalDocTypeController::class);
                 Route::resource('document', LegalDocController::class);
+                Route::get('kpi/list', [KpiController::class, 'list'])->name('kpi.list');
+                Route::get('kpi/{kpi}/show-list',[KpiController::class, 'show_list'])->name('kpi.show_list');
+                Route::get('kpi/{kpi}/show-create',[KpiController::class, 'show_create'])->name('kpi.show_create');
+                Route::get('kpi/{kpi}/{objective}/show-edit',[KpiController::class, 'show_edit'])->name('kpi.show_edit');
+                Route::resource('kpi',KpiController::class);
+                Route::resource('kpi-objective',KpiObjectiveController::class);
+                Route::get('history/list',[HistoryController::class, 'list'])->name('history.list');
+                Route::resource('history', HistoryController::class);
+                Route::get('legal-policy/list',[LegalPolicyController::class, 'list'])->name('legal-policy.list');
+                Route::resource('legal-policy', LegalPolicyController::class);
             });
+            Route::name('support.')->group(function(){
+                Route::get('faq/list',[FaqCategoryController::class, 'list'])->name('faq.list');
+                Route::get('faq/{faq}/show-list',[FaqCategoryController::class, 'show_list'])->name('faq.show_list');
+                Route::get('faq/{faq}/show-create',[FaqCategoryController::class, 'show_create'])->name('faq.show_create');
+                Route::get('faq/{faq}/{faqs}/show-edit',[FaqCategoryController::class, 'show_edit'])->name('faq.show_edit');
+                Route::resource('faq', FaqCategoryController::class);
+                Route::resource('faqs', FaqController::class);
+                Route::get('inbox/list',[InboxController::class, 'list'])->name('inbox.list');
+                Route::resource('inbox', InboxController::class);
+                Route::get('license/list',[LicenseController::class, 'list'])->name('license.list');
+                Route::resource('license', LicenseController::class);
+                Route::get('ticket/list',[TicketController::class, 'list'])->name('ticket.list');
+                Route::resource('ticket', TicketController::class);
+            });
+            Route::get('todo/list',[TodoListController::class, 'list'])->name('todo.list');
+            Route::resource('todo', TodoListController::class);
             Route::name('setting.')->group(function(){
-                Route::get('module/list',[ModuleController::class, 'list'])->name('module.list');
-                Route::get('module/{module}/show-list',[ModuleController::class, 'show_list'])->name('module.show_list');
-                Route::get('module/{module}/show-create',[ModuleController::class, 'show_create'])->name('module.show_create');
-                Route::get('module/{module}/{modulePrivilege}/show-edit',[ModuleController::class, 'show_edit'])->name('module.show_edit');
-                Route::resource('module', ModuleController::class);
+                Route::get('permission/list',[PermissionController::class, 'list'])->name('permission.list');
+                Route::resource('permission', PermissionController::class);
+            });
+            Route::name('profile.')->group(function(){
+                Route::get('profile', [ProfileController::class, 'index'])->name('index');
+                Route::get('profile/get-cv', [ProfileController::class, 'get_cv'])->name('cv.get');
+                Route::post('profile/remove-cv', [ProfileController::class, 'remove_cv'])->name('cv.remove');
+                Route::post('profile/upload-cv', [ProfileController::class, 'upload_cv'])->name('cv.upload');
+                Route::post('profile/change-avatar', [ProfileController::class, 'change_avatar'])->name('avatar.change');
+                Route::post('profile/remove-avatar', [ProfileController::class, 'remove_avatar'])->name('avatar.remove');
+                Route::post('profile/store', [ProfileController::class, 'store'])->name('store');
+                Route::post('profile/update-sosmed', [ProfileController::class, 'update_sosmed'])->name('update_sosmed');
+                Route::get('overview', [ProfileController::class, 'overview'])->name('overview');
+                Route::get('setting', [ProfileController::class, 'index_setting'])->name('setting');
+                Route::get('view_setting', [ProfileController::class, 'setting'])->name('view_setting');
+                Route::get('security', [ProfileController::class, 'index_security'])->name('security');
+                Route::get('view_security', [ProfileController::class, 'security'])->name('view_security');
+                Route::get('billing', [ProfileController::class, 'index_billing'])->name('billing');
+                Route::get('view_billing', [ProfileController::class, 'billing'])->name('view_billing');
+                Route::get('statement', [ProfileController::class, 'index_statement'])->name('statement');
+                Route::get('view_statement', [ProfileController::class, 'statement'])->name('view_statement');
+                Route::get('referral', [ProfileController::class, 'index_referral'])->name('referral');
+                Route::get('view_referral', [ProfileController::class, 'referral'])->name('view_referral');
+                Route::get('log', [ProfileController::class, 'index_log'])->name('log');
+                Route::get('view_log', [ProfileController::class, 'log'])->name('view_log');
+                Route::get('my-project', [ProfileController::class, 'index_project'])->name('project');
+                Route::get('view_project', [ProfileController::class, 'project'])->name('view_project');
+                Route::get('campaign', [ProfileController::class, 'index_campaign'])->name('campaign');
+                Route::get('view_campaign', [ProfileController::class, 'campaign'])->name('view_campaign');
+                Route::get('follower', [ProfileController::class, 'index_follower'])->name('follower');
+                Route::get('view_follower', [ProfileController::class, 'follower'])->name('view_follower');
+                Route::get('activity', [ProfileController::class, 'index_activity'])->name('activity');
+                Route::get('view_activity', [ProfileController::class, 'activity'])->name('view_activity');
             });
             Route::get('logout',[AuthController::class, 'do_logout'])->name('auth.logout');
             // Route::get('/', function () {

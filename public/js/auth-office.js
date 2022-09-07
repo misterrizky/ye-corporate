@@ -24,8 +24,18 @@ $("#form_reset").on('keydown', 'input', function (event) {
         var $this = $(event.target);
         var index = parseFloat($this.attr('data-reset'));
         var val = $($this).val();
-        if(index < 3){
-            $('[data-reset="' + (index + 1).toString() + '"]').focus();
+        if(index == 1){
+            if(val.length > 0){
+                var validateMail = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+                if(!validateMail.test(val)){
+                    toastify_message($($this).data('format'));
+                    // custom_message('info',$($this).data('format'))
+                }else{
+                    $('[data-reset="' + (index + 1).toString() + '"]').focus();
+                }
+            }else{
+                toastify_message($($this).data('validation'));
+            }
         }else{
             $('#tombol_reset').trigger("click");
         }

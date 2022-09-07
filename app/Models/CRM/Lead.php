@@ -4,11 +4,12 @@ namespace App\Models\CRM;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Lead extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     public function getImageAttribute()
     {
         if($this->avatar){

@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class NewsletterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:newsletter-list|newsletter-create|newsletter-edit|newsletter-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:newsletter-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:newsletter-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:newsletter-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())

@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Validator;
 
 class EmployeeMemoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $collection = EmployeeMemo::where('employee_id',Auth::guard('employees')->user()->id)->latest()->get();
@@ -25,19 +29,11 @@ class EmployeeMemoController extends Controller
             'title_memo' => 'required',
             'body_memo' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('title_memo')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('title_memo'),
-                ]);
-            }elseif ($errors->has('body_memo')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('body_memo'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $employeeMemo = new EmployeeMemo;
         $employeeMemo->employee_id = Auth::guard('employees')->user()->id;
@@ -47,6 +43,7 @@ class EmployeeMemoController extends Controller
         return response()->json([
             'alert' => 'success',
             'message' => 'Memo Created',
+            'redirect' => 'memo',
         ]);
     }
     public function show(EmployeeMemo $employeeMemo)
@@ -63,19 +60,11 @@ class EmployeeMemoController extends Controller
             'title_memo' => 'required',
             'body_memo' => 'required',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('title_memo')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('title_memo'),
-                ]);
-            }elseif ($errors->has('body_memo')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('body_memo'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $employeeMemo->title = $request->title_memo;
         $employeeMemo->body = $request->body_memo;
@@ -83,6 +72,7 @@ class EmployeeMemoController extends Controller
         return response()->json([
             'alert' => 'success',
             'message' => 'Memo Updated',
+            'redirect' => 'memo',
         ]);
     }
     public function destroy(EmployeeMemo $employeeMemo)
@@ -91,6 +81,7 @@ class EmployeeMemoController extends Controller
         return response()->json([
             'alert' => 'success',
             'message' => 'Memo Deleted',
+            'redirect' => 'memo',
         ]);
     }
 }

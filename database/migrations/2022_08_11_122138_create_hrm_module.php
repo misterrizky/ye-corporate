@@ -22,11 +22,13 @@ return new class extends Migration
             $table->enum('st',['Pending','Approved','Denied'])->nullable();
             $table->integer('verified_by')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->longText('desc')->nullable();
+            $table->softDeletes();
         });
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
@@ -62,12 +64,14 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamp('last_seen')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('employee_activities', function (Blueprint $table) {
             $table->id();
             $table->integer('employee_id')->default(0)->nullable();
             $table->longText('message')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('employee_addresses', function (Blueprint $table) {
             $table->id();
@@ -81,6 +85,7 @@ return new class extends Migration
             $table->bigInteger('village_id')->default(0);
             $table->string('postcode',5)->nullable();
             $table->boolean('is_primary');
+            $table->softDeletes();
         });
         Schema::create('employee_attendances', function (Blueprint $table) {
             $table->id();
@@ -95,11 +100,13 @@ return new class extends Migration
             $table->string('account_number')->unique();
             $table->integer('branch_name')->default(0);
             $table->boolean('is_primary');
+            $table->softDeletes();
         });
         Schema::create('employee_certificates', function (Blueprint $table) {
             $table->id();
             $table->integer('employee_id')->default(0);
             $table->string('file')->nullable();
+            $table->softDeletes();
         });
         Schema::create('employee_memos', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -115,6 +122,7 @@ return new class extends Migration
             $table->string('amount')->default(0);
             $table->string('file')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('employee_rewards', function (Blueprint $table) {
             $table->id();
@@ -125,6 +133,7 @@ return new class extends Migration
             $table->enum('st',['Pending','Approved','Denied'])->nullable();
             $table->integer('created_by')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('job_applications', function (Blueprint $table) {
             $table->id();
@@ -134,11 +143,13 @@ return new class extends Migration
             $table->longText('messages');
             $table->string('st',1);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('kpis', function (Blueprint $table) {
             $table->id();
             $table->longText('function')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('kpi_objectives', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -147,6 +158,7 @@ return new class extends Migration
             $table->integer('department_id')->default(0);
             $table->integer('position_id')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('kpi_key_results', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -163,30 +175,35 @@ return new class extends Migration
             $table->longText('supporting_data')->nullable();
             $table->float('score')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
-        Schema::create('modules', function (Blueprint $table) {
-            $table->id();
-            $table->integer('module_id')->default(0);
-            $table->string('name');
-            $table->string('url')->nullable();
-            $table->longText('icon')->nullable();
-            $table->boolean('is_show')->default(1);
-        });
-        Schema::create('module_privileges', function (Blueprint $table) {
-            $table->id();
-            $table->integer('module_id')->default(0);
-            $table->string('name');
-        });
-        Schema::create('permissions', function (Blueprint $table) {
-            $table->id();
-            $table->integer('position_id')->default(0);
-            $table->integer('module_id')->default(0);
-        });
+        // Schema::create('modules', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->integer('module_id')->default(0);
+        //     $table->string('name');
+        //     $table->string('url')->nullable();
+        //     $table->longText('icon')->nullable();
+        //     $table->boolean('is_show')->default(1);
+        //     $table->softDeletes();
+        // });
+        // Schema::create('module_privileges', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->integer('module_id')->default(0);
+        //     $table->string('name');
+        //     $table->softDeletes();
+        // });
+        // Schema::create('permissions', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->integer('position_id')->default(0);
+        //     $table->integer('module_id')->default(0);
+        //     $table->softDeletes();
+        // });
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
             $table->integer('department_id')->default(0);
             $table->string('name');
             $table->longText('desc')->nullable();
+            $table->softDeletes();
         });
         Schema::create('vacancy_jobs', function (Blueprint $table) {
             $table->id();
@@ -201,6 +218,7 @@ return new class extends Migration
             $table->string('rates');
             $table->enum('st',['Open','Closed'])->default('Open');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -226,9 +244,9 @@ return new class extends Migration
         Schema::dropIfExists('kpis');
         Schema::dropIfExists('kpi_objectives');
         Schema::dropIfExists('kpi_key_results');
-        Schema::dropIfExists('modules');
-        Schema::dropIfExists('module_privileges');
-        Schema::dropIfExists('permissions');
+        // Schema::dropIfExists('modules');
+        // Schema::dropIfExists('module_privileges');
+        // Schema::dropIfExists('permissions');
         Schema::dropIfExists('positions');
         Schema::dropIfExists('vacancy_jobs');
     }

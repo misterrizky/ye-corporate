@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody class="text-gray-600 fw-semibold">
-        @foreach ($collection as $key => $item)
+        @forelse ($collection as $key => $item)
         <tr>
             <td>
                 {{$key+ $collection->firstItem()}}
@@ -72,7 +72,11 @@
                 </a>
             </td>
         </tr>
-        @endforeach
+        @empty
+        <tr>
+            <td align="center" colspan="8">No Data</td>
+        </tr>
+        @endforelse
     </tbody>
 </table>
 {{$collection->links('themes.office.pagination')}}

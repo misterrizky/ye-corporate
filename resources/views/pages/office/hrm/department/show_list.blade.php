@@ -8,24 +8,24 @@
                 </div>
             </div>
             <div class="card-body pt-1">
-                <div class="fw-bold text-gray-600 mb-5">Total permission with this position: {{$item->permission->count() > 0 ? $item->permission->count() : 0}}</div>
-                @if($item->permission->count() > 0 ? $item->permission->count() : '')
+                <div class="fw-bold text-gray-600 mb-5">Total permission with this position: {{$item->role_permission->count() > 0 ? $item->role_permission->count() : 0}}</div>
+                @if($item->role_permission->count() > 0 ? $item->role_permission->count() : '')
                 <div class="d-flex flex-column text-gray-600">
                     @php
                     $total = 5;
                     @endphp
-                    @foreach($item->permission as $keys => $permission)
+                    @foreach($item->role_permission as $keys => $permission)
                     @if(++$keys < 6)
                     <div class="d-flex align-items-center py-2">
-                        <span class="bullet bg-{{$permission->module->module_id == 0 ? 'primary' : 'warning'}} me-3"></span>
-                        {{$permission->module->name}}
+                        <span class="bullet bg-primary me-3"></span>
+                        {{$permission->permission->name}}
                     </div>
                     @endif
                     @endforeach
-                    @if($item->permission->count() > 5)
+                    @if($item->role_permission->count() > 5)
                     <div class='d-flex align-items-center py-2'>
                         <span class='bullet bg-primary me-3'></span>
-                        <em>and {{$item->permission->count() - $total}} more...</em>
+                        <em>and {{$item->role_permission->count() - $total}} more...</em>
                     </div>
                     @endif
                 </div>

@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Validator;
 
 class LegalDocController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:doc-list|doc-create|doc-edit|doc-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:doc-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:doc-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:doc-delete', ['only' => ['destroy']]);
+    }
     public function index()
     {
         //
@@ -24,32 +32,21 @@ class LegalDocController extends Controller
     {
         if($request->id){
             $document = LegalDoc::where('id',$request->id)->first();
-        }else{
-            $document = new LegalDoc;
-        }
-        if($request->id){
             $validator = Validator::make($request->all(), [
-                'code' => 'required|unique:legal_docs,code,'.$document->id,
+                'code' => 'required',
             ]);
         }else{
+            $document = new LegalDoc;
             $validator = Validator::make($request->all(), [
-                'code' => 'required|unique:legal_docs,code',
+                'code' => 'required',
                 'attachment' => 'required',
             ]);
         }
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }elseif ($errors->has('attachment')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('attachment'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $type = LegalDocType::where('id',$request->type)->first();
         $document->doc_type_id = $request->type;

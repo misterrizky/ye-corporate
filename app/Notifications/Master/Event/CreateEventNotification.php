@@ -30,8 +30,8 @@ class CreateEventNotification extends Notification
     {
         return [
             'tipe' => 'Event',
-            'nama' => $this->employee->name,
-            'pesan' => "Hi ".$this->employee->name.", ".$this->event->name." just created by ".$this->employee->name." at ".$this->event->start_at->format('d F Y, g:i a')." to ".$this->event->end_at->format('d F Y, g:i a')."."
+            'nama' => $this->event->name,
+            'pesan' => "Hi ".$notifiable->name.", ".$this->event->name." just created by ".$this->employee->name." on ".$this->event->start_at->format('d F Y, g:i a')." to ".$this->event->end_at->format('d F Y, g:i a')." at ".date('d F Y, g:i a')."."
         ];
     }
 }

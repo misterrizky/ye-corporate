@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Validator;
 
 class ContactGroupController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:contactGroup-list|contactGroup-create|contactGroup-edit|contactGroup-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:contactGroup-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:contactGroup-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:contactGroup-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         $lead = Lead::get();
@@ -26,14 +34,11 @@ class ContactGroupController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:contact_groups,name',
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('name')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $group = new ContactGroup;
         $group->name = $request->name;

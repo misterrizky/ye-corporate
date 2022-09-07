@@ -10,9 +10,10 @@ use Illuminate\Notifications\Notification;
 class ResetPasswordNotification extends Notification
 {
     use Queueable;
-    public function __construct()
+    public $data;
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
     public function via($notifiable)
     {
@@ -20,7 +21,8 @@ class ResetPasswordNotification extends Notification
     }
     public function toMail($notifiable)
     {
-        return (new MailMessage)->subject('Yada Ekidanta | Reset Password Confirmation')->from('noreply@yadaekidanta.com')->view('email.reset_password',compact('notifiable'));
+        $data = $this->data;
+        return (new MailMessage)->subject('Yada Ekidanta | Reset Password Confirmation')->from('noreply@yadaekidanta.com')->view('email.auth.reset_password',compact('notifiable','data'));
     }
     public function toArray($notifiable)
     {

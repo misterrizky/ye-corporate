@@ -12,10 +12,10 @@ use Illuminate\Notifications\Messages\MailMessage;
 class DeleteEventNotification extends Notification
 {
     use Queueable;
-    protected $events,$employee;
-    public function __construct($events,Employee $employee)
+    protected $event,$employee;
+    public function __construct(Event $event,Employee $employee)
     {
-        $this->events = $events;
+        $this->event = $event;
         $this->employee = $employee;
     }
     public function via($notifiable)
@@ -30,8 +30,8 @@ class DeleteEventNotification extends Notification
     {
         return [
             'tipe' => 'Event',
-            'nama' => $this->employee->name,
-            'pesan' => "Hi ".$this->employee->name.", ".$this->events->name." just deleted by ".$this->employee->name." at ".date('d F Y, g:i a')."."
+            'nama' => $this->event->name,
+            'pesan' => "Hi ".$notifiable->name.", ".$this->event->name." just deleted by ".$this->employee->name." at ".date('d F Y, g:i a')."."
         ];
     }
 }

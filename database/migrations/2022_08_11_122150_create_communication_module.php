@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longText('messages');
             $table->enum('type',['General','Interview','Meeting','Mutasi','Payroll','Promotion','Punishment','Others']);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->string('sender',1);
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
@@ -41,6 +43,7 @@ return new class extends Migration
             $table->longText('from');
             $table->longText('to');
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('news', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -52,6 +55,7 @@ return new class extends Migration
             $table->string('viewer',5);
             $table->integer('created_by')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('new_likes', function (Blueprint $table) {
             $table->id();
@@ -65,6 +69,7 @@ return new class extends Migration
             $table->integer('employee_id')->nullable();
             $table->longText('body')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

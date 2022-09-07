@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 class BankController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:bank-list|bank-create|bank-edit|bank-delete', ['only' => ['index','show']]);
+        // $this->middleware('permission:bank-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:bank-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:bank-delete', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if($request->ajax())
@@ -28,19 +36,11 @@ class BankController extends Controller
             'name' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $bank = new Bank;
         $bank->code = $request->code;
@@ -67,19 +67,11 @@ class BankController extends Controller
             'name' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            if ($errors->has('code')) {
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('code'),
-                ]);
-            }else if($errors->has('name')){
-                return response()->json([
-                    'alert' => 'error',
-                    'message' => $errors->first('name'),
-                ]);
-            }
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
         $bank->code = $request->code;
         $bank->name = $request->name;

@@ -31,14 +31,39 @@
                     <path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor" />
                 </svg>
             </span>
+            @if($documentType->parent)
+                @if($documentType->parent->parent)
+                <a href="javascript:;" onclick="load_url('{{route('office.corporate.document-type.show',$documentType->parent->parent->id)}}');">{{$documentType->parent->parent->code}}</a>
+                <span class="svg-icon svg-icon-2 svg-icon-primary mx-1">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor" />
+                    </svg>
+                </span>
+                @endif
+                <a href="javascript:;" onclick="load_url('{{route('office.corporate.document-type.show',$documentType->parent->id)}}');">{{$documentType->parent->code}}</a>
+                <span class="svg-icon svg-icon-2 svg-icon-primary mx-1">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor" />
+                    </svg>
+                </span>
+            @endif
             {{$documentType->code}}
         </div>
     </div>
-    <div class="badge badge-lg badge-primary">
-        <span id="kt_file_manager_items_counter">{{$collection->count()}} items</span>
+    <div class="row">
+        <div class="col-6">
+            <div class="badge badge-lg badge-primary">
+                <span id="kt_file_manager_items_counter">{{$collections->count()}} folders</span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="badge badge-lg badge-primary">
+                <span id="kt_file_manager_items_counter">{{$collection->count()}} items</span>
+            </div>
+        </div>
     </div>
 </div>
-<table id="table_directory" data-kt-filemanager-table="folders" class="table align-middle table-row-dashed fs-6 gy-5">
+<table id="table_files" data-kt-filemanager-table="folders" class="table align-middle table-row-dashed fs-6 gy-5">
     <thead>
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
             <th class="min-w-250px">Name</th>
@@ -46,6 +71,47 @@
         </tr>
     </thead>
     <tbody class="fw-semibold text-gray-600">
+        @foreach ($collections as $key => $item)
+        <tr>
+            <td data-order="account">
+                <div class="d-flex align-items-center">
+                    <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z" fill="currentColor" />
+                            <path d="M9.2 3H3C2.4 3 2 3.4 2 4V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V7C22 6.4 21.6 6 21 6H12L10.4 3.60001C10.2 3.20001 9.7 3 9.2 3Z" fill="currentColor" />
+                        </svg>
+                    </span>
+                    <a href="javascript:;" onclick="load_url('{{route('office.corporate.document-type.show',$item->id)}}');" class="text-gray-800 text-hover-primary">{{$item->parent->code}} - ({{$item->name}})</a>
+                </div>
+            </td>
+            <td class="text-end" data-kt-filemanager-table="action_dropdown">
+                <div class="d-flex justify-content-end">
+                    <div class="ms-2">
+                        <a href="javascript:;" onclick="edit_folder('{{$item->id}}','{{$item->code}}','{{$item->name}}');" class="btn btn-sm btn-hover-scale btn-icon btn-bg-light btn-active-color-warning w-30px h-30px">
+                            <span class="svg-icon svg-icon-5 svg-icon-gray-700">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd" d="M2 4.63158C2 3.1782 3.1782 2 4.63158 2H13.47C14.0155 2 14.278 2.66919 13.8778 3.04006L12.4556 4.35821C11.9009 4.87228 11.1726 5.15789 10.4163 5.15789H7.1579C6.05333 5.15789 5.15789 6.05333 5.15789 7.1579V16.8421C5.15789 17.9467 6.05333 18.8421 7.1579 18.8421H16.8421C17.9467 18.8421 18.8421 17.9467 18.8421 16.8421V13.7518C18.8421 12.927 19.1817 12.1387 19.7809 11.572L20.9878 10.4308C21.3703 10.0691 22 10.3403 22 10.8668V19.3684C22 20.8218 20.8218 22 19.3684 22H4.63158C3.1782 22 2 20.8218 2 19.3684V4.63158Z" fill="currentColor"/>
+                                    <path d="M10.9256 11.1882C10.5351 10.7977 10.5351 10.1645 10.9256 9.77397L18.0669 2.6327C18.8479 1.85165 20.1143 1.85165 20.8953 2.6327L21.3665 3.10391C22.1476 3.88496 22.1476 5.15129 21.3665 5.93234L14.2252 13.0736C13.8347 13.4641 13.2016 13.4641 12.811 13.0736L10.9256 11.1882Z" fill="currentColor"/>
+                                    <path d="M8.82343 12.0064L8.08852 14.3348C7.8655 15.0414 8.46151 15.7366 9.19388 15.6242L11.8974 15.2092C12.4642 15.1222 12.6916 14.4278 12.2861 14.0223L9.98595 11.7221C9.61452 11.3507 8.98154 11.5055 8.82343 12.0064Z" fill="currentColor"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="ms-2">
+                        <a href="javascript:;" onclick="handle_confirm('Are you sure want to delete this document type ?', 'Yes, i`m sure', 'No, i`m not','DELETE','{{route('office.corporate.document-type.destroy',$item->id)}}');" class="btn btn-sm btn-hover-scale btn-icon btn-bg-light btn-active-color-danger w-30px h-30px">
+                            <span class="svg-icon svg-icon-5 svg-icon-gray-700">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"/>
+                                    <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"/>
+                                    <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        @endforeach
         @foreach ($collection as $item)
         <tr>
             <td data-order="landing.html">
@@ -90,8 +156,50 @@
     </tbody>
 </table>
 <table class="d-none">
-    <tr id="directory_add_new_row" data-kt-filemanager-template="upload">
+    <tr id="folder_add_new_row" data-kt-filemanager-template="upload">
         <td id="kt_file_manager_add_folder_form" class="fv-row">
+            <form id="form_input_folder">
+                <div class="d-flex align-items-center">
+                    <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z" fill="currentColor" />
+                            <path d="M9.2 3H3C2.4 3 2 3.4 2 4V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V7C22 6.4 21.6 6 21 6H12L10.4 3.60001C10.2 3.20001 9.7 3 9.2 3Z" fill="currentColor" />
+                        </svg>
+                    </span>
+                    <input type="hidden" name="type" value="{{$documentType->id}}" placeholder="Enter the file name" class="form-control mw-250px me-3" />
+                    <input type="text" name="code" placeholder="Enter the folder code" class="form-control mw-250px me-3" />
+                    <input type="text" name="name" placeholder="Enter the folder name" class="form-control mw-250px me-3" />
+                    <button class="btn btn-icon btn-light-primary me-3" id="tombol_simpan_folder" onclick="save('#tombol_simpan_folder','#form_input_folder','{{route('office.corporate.document-type.store')}}','POST');">
+                        <span class="indicator-label">
+                            <span class="svg-icon svg-icon-1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.89557 13.4982L7.79487 11.2651C7.26967 10.7068 6.38251 10.7068 5.85731 11.2651C5.37559 11.7772 5.37559 12.5757 5.85731 13.0878L9.74989 17.2257C10.1448 17.6455 10.8118 17.6455 11.2066 17.2257L18.1427 9.85252C18.6244 9.34044 18.6244 8.54191 18.1427 8.02984C17.6175 7.47154 16.7303 7.47154 16.2051 8.02984L11.061 13.4982C10.7451 13.834 10.2115 13.834 9.89557 13.4982Z" fill="currentColor" />
+                                </svg>
+                            </span>
+                        </span>
+                        <span class="indicator-progress">
+                            <span class="spinner-border spinner-border-sm align-middle"></span>
+                        </span>
+                    </button>
+                    <button type="button" class="btn btn-icon btn-light-danger button_cancel_folder" onclick="cancel_folder();">
+                        <span class="indicator-label">
+                            <span class="svg-icon svg-icon-1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.5" x="7.05025" y="15.5356" width="12" height="2" rx="1" transform="rotate(-45 7.05025 15.5356)" fill="currentColor" />
+                                    <rect x="8.46447" y="7.05029" width="12" height="2" rx="1" transform="rotate(45 8.46447 7.05029)" fill="currentColor" />
+                                </svg>
+                            </span>
+                        </span>
+                        <span class="indicator-progress">
+                            <span class="spinner-border spinner-border-sm align-middle"></span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </td>
+    </tr>
+    <tr id="files_add_new_row" data-kt-filemanager-template="upload">
+        <td id="kt_file_manager_add_file_form" class="fv-row">
             <form id="form_input">
                 <div class="d-flex align-items-center">
                     <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
@@ -134,8 +242,51 @@
     </tr>
 </table>
 <table class="d-none">
-    <tr id="directory_edit_new_row" data-kt-filemanager-template="upload">
+    <tr id="folder_edit_new_row" data-kt-filemanager-template="upload">
         <td id="kt_file_manager_edit_folder_form" class="fv-row">
+            <form id="form_input">
+                <div class="d-flex align-items-center">
+                    <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z" fill="currentColor" />
+                            <path d="M9.2 3H3C2.4 3 2 3.4 2 4V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V7C22 6.4 21.6 6 21 6H12L10.4 3.60001C10.2 3.20001 9.7 3 9.2 3Z" fill="currentColor" />
+                        </svg>
+                    </span>
+                    <input type="hidden" name="type" value="{{$documentType->id}}" placeholder="Enter the file name" class="form-control mw-250px me-3" />
+                    <input type="hidden" id="id_type" name="id" placeholder="Enter the code" class="form-control mw-250px me-3" />
+                    <input type="text" id="code_type" name="code" placeholder="Enter the code" class="form-control mw-250px me-3" />
+                    <input type="text" id="name_type" name="name" placeholder="Enter the name" class="form-control mw-250px me-3" />
+                    <button class="btn btn-icon btn-light-primary me-3" id="tombol_simpan" onclick="save('#tombol_simpan','#form_input','{{route('office.corporate.document-type.store')}}','POST');">
+                        <span class="indicator-label">
+                            <span class="svg-icon svg-icon-1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.89557 13.4982L7.79487 11.2651C7.26967 10.7068 6.38251 10.7068 5.85731 11.2651C5.37559 11.7772 5.37559 12.5757 5.85731 13.0878L9.74989 17.2257C10.1448 17.6455 10.8118 17.6455 11.2066 17.2257L18.1427 9.85252C18.6244 9.34044 18.6244 8.54191 18.1427 8.02984C17.6175 7.47154 16.7303 7.47154 16.2051 8.02984L11.061 13.4982C10.7451 13.834 10.2115 13.834 9.89557 13.4982Z" fill="currentColor" />
+                                </svg>
+                            </span>
+                        </span>
+                        <span class="indicator-progress">
+                            <span class="spinner-border spinner-border-sm align-middle"></span>
+                        </span>
+                    </button>
+                    <button type="button" class="btn btn-icon btn-light-danger button_cancel" onclick="cancel();">
+                        <span class="indicator-label">
+                            <span class="svg-icon svg-icon-1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.5" x="7.05025" y="15.5356" width="12" height="2" rx="1" transform="rotate(-45 7.05025 15.5356)" fill="currentColor" />
+                                    <rect x="8.46447" y="7.05029" width="12" height="2" rx="1" transform="rotate(45 8.46447 7.05029)" fill="currentColor" />
+                                </svg>
+                            </span>
+                        </span>
+                        <span class="indicator-progress">
+                            <span class="spinner-border spinner-border-sm align-middle"></span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </td>
+    </tr>
+    <tr id="files_edit_new_row" data-kt-filemanager-template="upload">
+        <td id="kt_file_manager_edit_file_form" class="fv-row">
             <form id="form_input">
                 <div class="d-flex align-items-center">
                     <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
@@ -180,16 +331,32 @@
 </table>
 <script>
     $("#add_folder").click(function(){
-        if($('#add_new_directory').length){
+        if($('#add_new_folder').length){
         }else{
-            $('#table_directory > tbody').prepend("<tr id='add_new_directory'>" + $('#directory_add_new_row').html() + "</tr>");
+            $('#table_files > tbody').prepend("<tr id='add_new_folder'>" + $('#folder_add_new_row').html() + "</tr>");
         }
     });
-    function edit_doc(id,code)
+    $("#add_files").click(function(){
+        if($('#add_new_files').length){
+        }else{
+            $('#table_files > tbody').prepend("<tr id='add_new_files'>" + $('#files_add_new_row').html() + "</tr>");
+        }
+    });
+    function edit_folder(id,code,name)
     {
         if($('#edit_new_directory').length){
         }else{
-            $('#table_directory > tbody').prepend("<tr id='edit_new_directory'>" + $('#directory_edit_new_row').html() + "</tr>");
+            $('#table_files > tbody').prepend("<tr id='edit_new_folder'>" + $('#folder_edit_new_row').html() + "</tr>");
+            $("#id_type").val(id);
+            $("#code_type").val(code);
+            $("#name_type").val(name);
+        }
+    }
+    function edit_doc(id,code)
+    {
+        if($('#edit_new_files').length){
+        }else{
+            $('#table_files > tbody').prepend("<tr id='edit_new_files'>" + $('#files_edit_new_row').html() + "</tr>");
             $("#id_doc").val(id);
             $("#code_doc").val(code);
         }
@@ -214,28 +381,36 @@
 
                 },
                 success: function(response) {
-                    toastify_message(response.message);
+                    $(form)[0].reset();
                     $(tombol).removeAttr("data-kt-indicator");
-                    if (response.alert == "success") {
-                        $(form)[0].reset();
-                        load_url("{{route('office.corporate.document-type.show',$documentType->id)}}");
-                    } else {
-                        setTimeout(function() {
-                            $(tombol).prop("disabled", false);
-                        }, 2000);
-                    }
+                    $(tombol).prop("disabled", false);
+                    handle_success(response);
+                },
+                error: function(xhr) {
+                    $(tombol).removeAttr("data-kt-indicator");
+                    $(tombol).prop("disabled", false);
+                    handle_error(xhr);
                 },
             });
             return false;
         });
+    }
+    function cancel_folder(){
+        var button = document.querySelector(".button_cancel_folder");
+        button.setAttribute("data-kt-indicator", "on");
+        setTimeout(() => {
+            button.removeAttribute("data-kt-indicator");
+            $("#add_new_folder").remove();
+            $("#edit_new_folder").remove();
+        }, 1000);
     }
     function cancel(){
         var button = document.querySelector(".button_cancel");
         button.setAttribute("data-kt-indicator", "on");
         setTimeout(() => {
             button.removeAttribute("data-kt-indicator");
-            $("#add_new_directory").remove();
-            $("#edit_new_directory").remove();
+            $("#add_new_files").remove();
+            $("#edit_new_files").remove();
         }, 1000);
     }
 </script>

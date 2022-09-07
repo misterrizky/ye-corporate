@@ -27,6 +27,7 @@
         <div id="kt_app_sidebar_menu_wrapper" class="app-sidebar-wrapper hover-scroll-overlay-y my-5" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-state="true">
             <!--begin::Menu-->
             <div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
+                @if(Auth::guard('employees')->user()->department_id != 0 && Auth::guard('employees')->user()->position_id != 0)
                 <!--begin:Menu item-->
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{request()->is('dashboard') || request()->is('dashboard-ecommerce') || request()->is('dashboard-project') || request()->is('dashboard-marketing') || request()->is('dashboard-analytic') || request()->is('dashboard-finance') ? 'here show' : ''}}">
                     <!--begin:Menu link-->
@@ -275,6 +276,18 @@
                             <!--end:Menu link-->
                         </div>
                         <!--end:Menu item-->
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link sidebar-link {{request()->is('company-industry') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.master.company-industry.index')}}');">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Company Industry</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
                 </div>
@@ -327,7 +340,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link sidebar-link {{request()->is('vacancy-job') || request()->is('vacancy-job/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.hrm.employee.index')}}');">
+                            <a class="menu-link sidebar-link {{request()->is('vacancy-job') || request()->is('vacancy-job/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.hrm.vacancy.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -396,8 +409,8 @@
                             <!--begin::Svg Icon | path: icons/duotune/communication/com005.svg-->
                             <span class="svg-icon svg-icon-2">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20 14H18V10H20C20.6 10 21 10.4 21 11V13C21 13.6 20.6 14 20 14ZM21 19V17C21 16.4 20.6 16 20 16H18V20H20C20.6 20 21 19.6 21 19ZM21 7V5C21 4.4 20.6 4 20 4H18V8H20C20.6 8 21 7.6 21 7Z" fill="currentColor" />
-                                    <path opacity="0.3" d="M17 22H3C2.4 22 2 21.6 2 21V3C2 2.4 2.4 2 3 2H17C17.6 2 18 2.4 18 3V21C18 21.6 17.6 22 17 22ZM10 7C8.9 7 8 7.9 8 9C8 10.1 8.9 11 10 11C11.1 11 12 10.1 12 9C12 7.9 11.1 7 10 7ZM13.3 16C14 16 14.5 15.3 14.3 14.7C13.7 13.2 12 12 10.1 12C8.10001 12 6.49999 13.1 5.89999 14.7C5.59999 15.3 6.19999 16 7.39999 16H13.3Z" fill="currentColor" />
+                                    <path opacity="0.3" d="M5 8.04999L11.8 11.95V19.85L5 15.85V8.04999Z" fill="currentColor"/>
+                                    <path d="M20.1 6.65L12.3 2.15C12 1.95 11.6 1.95 11.3 2.15L3.5 6.65C3.2 6.85 3 7.15 3 7.45V16.45C3 16.75 3.2 17.15 3.5 17.25L11.3 21.75C11.5 21.85 11.6 21.85 11.8 21.85C12 21.85 12.1 21.85 12.3 21.75L20.1 17.25C20.4 17.05 20.6 16.75 20.6 16.45V7.45C20.6 7.15 20.4 6.75 20.1 6.65ZM5 15.85V7.95L11.8 4.05L18.6 7.95L11.8 11.95V19.85L5 15.85Z" fill="currentColor"/>
                                 </svg>
                             </span>
                             <!--end::Svg Icon-->
@@ -411,7 +424,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link sidebar-link {{request()->is('lead') || request()->is('lead/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.crm.lead.index')}}');">
+                            <a class="menu-link sidebar-link {{request()->is('kpi') || request()->is('kpi/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.corporate.kpi.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -423,7 +436,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link sidebar-link {{request()->is('client') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.crm.client.index')}}');">
+                            <a class="menu-link sidebar-link {{request()->is('history') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.corporate.history.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -435,7 +448,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link sidebar-link {{request()->is('client') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.crm.client.index')}}');">
+                            <a class="menu-link sidebar-link {{request()->is('legal-policy') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.corporate.legal-policy.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -456,8 +469,8 @@
                             <!--begin::Svg Icon | path: icons/duotune/communication/com005.svg-->
                             <span class="svg-icon svg-icon-2">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20 14H18V10H20C20.6 10 21 10.4 21 11V13C21 13.6 20.6 14 20 14ZM21 19V17C21 16.4 20.6 16 20 16H18V20H20C20.6 20 21 19.6 21 19ZM21 7V5C21 4.4 20.6 4 20 4H18V8H20C20.6 8 21 7.6 21 7Z" fill="currentColor" />
-                                    <path opacity="0.3" d="M17 22H3C2.4 22 2 21.6 2 21V3C2 2.4 2.4 2 3 2H17C17.6 2 18 2.4 18 3V21C18 21.6 17.6 22 17 22ZM10 7C8.9 7 8 7.9 8 9C8 10.1 8.9 11 10 11C11.1 11 12 10.1 12 9C12 7.9 11.1 7 10 7ZM13.3 16C14 16 14.5 15.3 14.3 14.7C13.7 13.2 12 12 10.1 12C8.10001 12 6.49999 13.1 5.89999 14.7C5.59999 15.3 6.19999 16 7.39999 16H13.3Z" fill="currentColor" />
+                                    <path d="M13 5.91517C15.8 6.41517 18 8.81519 18 11.8152C18 12.5152 17.9 13.2152 17.6 13.9152L20.1 15.3152C20.6 15.6152 21.4 15.4152 21.6 14.8152C21.9 13.9152 22.1 12.9152 22.1 11.8152C22.1 7.01519 18.8 3.11521 14.3 2.01521C13.7 1.91521 13.1 2.31521 13.1 3.01521V5.91517H13Z" fill="currentColor" />
+                                    <path opacity="0.3" d="M19.1 17.0152C19.7 17.3152 19.8 18.1152 19.3 18.5152C17.5 20.5152 14.9 21.7152 12 21.7152C9.1 21.7152 6.50001 20.5152 4.70001 18.5152C4.30001 18.0152 4.39999 17.3152 4.89999 17.0152L7.39999 15.6152C8.49999 16.9152 10.2 17.8152 12 17.8152C13.8 17.8152 15.5 17.0152 16.6 15.6152L19.1 17.0152ZM6.39999 13.9151C6.19999 13.2151 6 12.5152 6 11.8152C6 8.81517 8.2 6.41515 11 5.91515V3.01519C11 2.41519 10.4 1.91519 9.79999 2.01519C5.29999 3.01519 2 7.01517 2 11.8152C2 12.8152 2.2 13.8152 2.5 14.8152C2.7 15.4152 3.4 15.7152 4 15.3152L6.39999 13.9151Z" fill="currentColor" />
                                 </svg>
                             </span>
                             <!--end::Svg Icon-->
@@ -471,7 +484,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link sidebar-link {{request()->is('lead') || request()->is('lead/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.crm.lead.index')}}');">
+                            <a class="menu-link sidebar-link {{request()->is('faq') || request()->is('faq/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.support.faq.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -483,7 +496,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link sidebar-link {{request()->is('client') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.crm.client.index')}}');">
+                            <a class="menu-link sidebar-link {{request()->is('inbox') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.support.inbox.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -495,7 +508,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link sidebar-link {{request()->is('client') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.crm.client.index')}}');">
+                            <a class="menu-link sidebar-link {{request()->is('license') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.support.license.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -507,7 +520,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link sidebar-link {{request()->is('client') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.crm.client.index')}}');">
+                            <a class="menu-link sidebar-link {{request()->is('ticket') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.support.ticket.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -540,7 +553,7 @@
                 </div>
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{request()->is('module') || request()->is('module/*') ? 'here show' : ''}}">
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{request()->is('permission') || request()->is('permission/*') ? 'here show' : ''}}">
                     <!--begin:Menu link-->
                     <span class="menu-link">
                         <span class="menu-icon">
@@ -562,11 +575,11 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link sidebar-link {{request()->is('module') || request()->is('module/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.setting.module.index')}}');">
+                            <a class="menu-link sidebar-link {{request()->is('permission') || request()->is('permission/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.setting.permission.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Modules</span>
+                                <span class="menu-title">Permission</span>
                             </a>
                             <!--end:Menu link-->
                         </div>
@@ -622,6 +635,32 @@
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu item-->
+                @else
+                <div class="menu-item">
+                    <!--begin:Menu content-->
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase fs-7">Main Menu</span>
+                    </div>
+                    <!--end:Menu content-->
+                </div>
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link sidebar-link {{request()->is('vacancy-job') || request()->is('vacancy-job/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.hrm.vacancy.index')}}');">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/coding/cod003.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.95 18.9688C16.75 18.9688 16.55 18.8688 16.35 18.7688C15.85 18.4688 15.75 17.8688 16.05 17.3688L19.65 11.9688L16.05 6.56876C15.75 6.06876 15.85 5.46873 16.35 5.16873C16.85 4.86873 17.45 4.96878 17.75 5.46878L21.75 11.4688C21.95 11.7688 21.95 12.2688 21.75 12.5688L17.75 18.5688C17.55 18.7688 17.25 18.9688 16.95 18.9688ZM7.55001 18.7688C8.05001 18.4688 8.15 17.8688 7.85 17.3688L4.25001 11.9688L7.85 6.56876C8.15 6.06876 8.05001 5.46873 7.55001 5.16873C7.05001 4.86873 6.45 4.96878 6.15 5.46878L2.15 11.4688C1.95 11.7688 1.95 12.2688 2.15 12.5688L6.15 18.5688C6.35 18.8688 6.65 18.9688 6.95 18.9688C7.15 18.9688 7.35001 18.8688 7.55001 18.7688Z" fill="currentColor" />
+                                    <path opacity="0.3" d="M10.45 18.9687C10.35 18.9687 10.25 18.9687 10.25 18.9687C9.75 18.8687 9.35 18.2688 9.55 17.7688L12.55 5.76878C12.65 5.26878 13.25 4.8687 13.75 5.0687C14.25 5.1687 14.65 5.76878 14.45 6.26878L11.45 18.2688C11.35 18.6688 10.85 18.9687 10.45 18.9687Z" fill="currentColor" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Vacancy Jobs</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                @endif
             </div>
             <!--end::Menu-->
         </div>
@@ -629,6 +668,7 @@
     </div>
     <!--end::sidebar menu-->
     <!--begin::Footer-->
+    @if(Auth::guard('employees')->user()->department_id != 0 && Auth::guard('employees')->user()->position_id != 0)
     <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
         <a href="../../demo1/dist/documentation/getting-started.html" class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click" title="200+ in-house components and 3rd-party plugins">
             <span class="btn-label">Docs &amp; Components</span>
@@ -645,5 +685,6 @@
             <!--end::Svg Icon-->
         </a>
     </div>
+    @endif
     <!--end::Footer-->
 </div>
