@@ -36,7 +36,7 @@ use App\Http\Controllers\Office\Corporate\LegalDocTypeController;
 use App\Http\Controllers\Office\Master\CompanyIndustryController;
 use App\Http\Controllers\Office\Communication\NotificationController;
 
-Route::group(['domain' => ''], function() {
+Route::group(['domain' => 'https://office.yadaekidanta.com'], function() {
     Route::redirect('/', 'dashboard', 301);
     Route::prefix('')->name('office.')->group(function(){
         Route::prefix('auth')->name('auth.')->group(function(){
