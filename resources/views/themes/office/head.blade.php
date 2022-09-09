@@ -2,6 +2,7 @@
     <title>
         {{config('app.name') ?? config('app.name')}}
     </title>
+    @laravelPWA
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta charset="utf-8" />
     <meta name="description" content="YE is one of the Enteprise Digital Transfromation Consultant & Integrator company in Indonesia, specializing in software solutions and application delivery & managed services. Our mission is to enable enterprises to ride the wave of digital era with tech-enabled innovation & business process automation." />

@@ -22,6 +22,7 @@ use App\Http\Controllers\Office\Master\IsicTypeController;
 use App\Http\Controllers\Office\CRM\ContactGroupController;
 use App\Http\Controllers\Office\HRM\EmployeeMemoController;
 use App\Http\Controllers\Office\HRM\JobApplicantController;
+use App\Http\Controllers\Office\Master\ChangelogController;
 use App\Http\Controllers\Office\Regional\CountryController;
 use App\Http\Controllers\Office\Regional\RegencyController;
 use App\Http\Controllers\Office\Regional\VillageController;
@@ -33,6 +34,7 @@ use App\Http\Controllers\Office\Support\FaqCategoryController;
 use App\Http\Controllers\Office\Corporate\LegalPolicyController;
 use App\Http\Controllers\Office\Corporate\KpiObjectiveController;
 use App\Http\Controllers\Office\Corporate\LegalDocTypeController;
+use App\Http\Controllers\Office\Master\ChangelogDetailController;
 use App\Http\Controllers\Office\Master\CompanyIndustryController;
 use App\Http\Controllers\Office\Communication\NotificationController;
 
@@ -84,6 +86,12 @@ Route::group(['domain' => ''], function() {
                 Route::get('isic-type/{isicType}/show-create',[IsicTypeController::class, 'show_create'])->name('isic-type.show_create');
                 Route::get('isic-type/{isicType}/{isic}/show-edit',[IsicTypeController::class, 'show_edit'])->name('isic-type.show_edit');
                 Route::resource('isic-type', IsicTypeController::class);
+                Route::get('changelog/list',[ChangelogController::class, 'list'])->name('changelog.list');
+                Route::get('changelog/{changelog}/show-list',[ChangelogController::class, 'show_list'])->name('changelog.show_list');
+                Route::get('changelog/{changelog}/show-create',[ChangelogController::class, 'show_create'])->name('changelog.show_create');
+                Route::get('changelog/{changelog}/{detail}/show-edit',[ChangelogController::class, 'show_edit'])->name('changelog.show_edit');
+                Route::resource('changelog', ChangelogController::class);
+                Route::resource('changelog-detail', ChangelogDetailController::class);
                 Route::resource('isic', IsicController::class);
                 Route::get('company-industry/list', [CompanyIndustryController::class, 'list'])->name('company-industry.list');
                 Route::resource('company-industry',CompanyIndustryController::class);

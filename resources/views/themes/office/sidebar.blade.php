@@ -619,7 +619,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="../../demo1/dist/documentation/getting-started/changelog.html">
+                    <a class="menu-link sidebar-link {{request()->is('changelog') ? 'active' : ''}}" href="javascript:;" href="javascript:;" onclick="load_url('{{route('office.master.changelog.index')}}');">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/coding/cod003.svg-->
                             <span class="svg-icon svg-icon-2">

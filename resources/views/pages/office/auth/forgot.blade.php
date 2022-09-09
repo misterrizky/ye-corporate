@@ -1,5 +1,5 @@
 <!--begin::Header-->
-<div class="d-flex flex-stack py-2" style="margin-bottom:34%;">
+<div class="d-flex flex-stack py-2" style="">
     <!--begin::Back link-->
     <div class="me-2">
         <a href="javascript:void(0);" onclick="load_url('{{route('office.auth.index')}}');" class="btn btn-icon bg-light rounded-circle">
