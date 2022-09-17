@@ -424,6 +424,18 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
+                            <a class="menu-link sidebar-link {{request()->is('service') || request()->is('service/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.corporate.service.index')}}');">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Service</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
                             <a class="menu-link sidebar-link {{request()->is('kpi') || request()->is('kpi/*') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.corporate.kpi.index')}}');">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
@@ -494,7 +506,7 @@
                         </div>
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
-                        <div class="menu-item">
+                        <div class="menu-item d-none">
                             <!--begin:Menu link-->
                             <a class="menu-link sidebar-link {{request()->is('inbox') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.support.inbox.index')}}');">
                                 <span class="menu-bullet">
@@ -506,7 +518,7 @@
                         </div>
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
-                        <div class="menu-item">
+                        <div class="menu-item d-none">
                             <!--begin:Menu link-->
                             <a class="menu-link sidebar-link {{request()->is('license') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.support.license.index')}}');">
                                 <span class="menu-bullet">
@@ -518,7 +530,7 @@
                         </div>
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
-                        <div class="menu-item">
+                        <div class="menu-item d-none">
                             <!--begin:Menu link-->
                             <a class="menu-link sidebar-link {{request()->is('ticket') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.support.ticket.index')}}');">
                                 <span class="menu-bullet">
@@ -598,7 +610,7 @@
                 </div>
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
-                <div class="menu-item">
+                <div class="menu-item d-none">
                     <!--begin:Menu link-->
                     <a class="menu-link" href="../../demo1/dist/documentation/getting-started.html">
                         <span class="menu-icon">
@@ -619,7 +631,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="../../demo1/dist/documentation/getting-started/changelog.html">
+                    <a class="menu-link sidebar-link {{request()->is('changelog') ? 'active' : ''}}" href="javascript:;" onclick="load_url('{{route('office.master.changelog.index')}}');">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/coding/cod003.svg-->
                             <span class="svg-icon svg-icon-2">
