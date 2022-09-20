@@ -21,7 +21,7 @@ return new class extends Migration
             $table->longText('slug')->nullable();
             $table->longText('description')->nullable();
             $table->string('thumbnail')->nullable();
-            $table->string('website')->nullable();
+            $table->string('url')->nullable();
             $table->float('amount',20,0)->nullable();
             $table->float('total_payment',20,0)->nullable();
             $table->float('total_spend',20,0)->nullable();

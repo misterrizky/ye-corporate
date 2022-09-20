@@ -16,6 +16,6 @@ class ContactGroup extends Model
     }
     public function clients ()
     {
-        return $this->hasMany(Lead::class);
+        return $this->hasMany(Client::class);
     }
 }

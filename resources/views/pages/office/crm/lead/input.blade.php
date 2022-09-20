@@ -272,7 +272,7 @@
     }
     loadLists("{{route('office.crm.contact-group.index')}}");
     function loadLists(url){
-        $.get(url, {}, function(result) {
+        $.get(url, {type:'lead'}, function(result) {
             $('#list_groups').html(result);
         }, "html");
     }

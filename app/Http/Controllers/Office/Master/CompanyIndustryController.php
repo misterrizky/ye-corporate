@@ -32,7 +32,6 @@ class CompanyIndustryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code' => 'required|max:100',
             'name' => 'required',
         ]);
 

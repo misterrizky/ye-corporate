@@ -1,11 +1,19 @@
 <div class="d-flex flex-stack mb-5">
     <a href="javascript:;" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary active">All Contacts</a>
-    <div class="badge badge-light-primary">{{$lead->count()}}</div>
+    <div class="badge badge-light-primary">
+        @if($type == "lead")
+            {{ $lead->count() }}
+        @else
+            {{ $client->count() }}
+        @endif
+    </div>
 </div>
 @forelse ($collection as $item)
 <div class="d-flex mb-4">
     <a href="javascript:;" onclick="" class="fs-6 fw-bold text-gray-800 text-hover-primary flex-grow-1">{{$item->name}}</a>
-    <div class="badge badge-light-primary me-3">{{$item->leads->count()}}</div>
+    <div class="badge badge-light-primary me-3">
+        {{$type == "lead" ? $item->leads->count() : $item->clients->count()}}
+    </div>
     <a href="javascript:;" onclick="handle_delete('Are you sure want to delete this group ?', 'Yes, i`m sure', 'No, i`m not','DELETE','{{route('office.crm.contact-group.destroy',$item->id)}}');" class="btn btn-sm btn-hover-scale btn-icon btn-bg-light btn-active-color-danger w-30px h-30px">
         <span class="svg-icon svg-icon-5 svg-icon-gray-700">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

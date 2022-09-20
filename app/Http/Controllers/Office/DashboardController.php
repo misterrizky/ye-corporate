@@ -11,8 +11,8 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->middleware('permission:dashboard-default', ['only' => ['index']]);
-        // $this->middleware('permission:dashboard-ecommerce', ['only' => ['ecommerce']]);
+        $this->middleware('permission:dashboard-default', ['only' => ['index']]);
+        $this->middleware('permission:dashboard-ecommerce', ['only' => ['ecommerce']]);
     }
     public function index(Request $request)
     {

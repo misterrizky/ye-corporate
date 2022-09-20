@@ -244,9 +244,6 @@ return new class extends Migration
         Schema::dropIfExists('kpis');
         Schema::dropIfExists('kpi_objectives');
         Schema::dropIfExists('kpi_key_results');
-        // Schema::dropIfExists('modules');
-        // Schema::dropIfExists('module_privileges');
-        // Schema::dropIfExists('permissions');
         Schema::dropIfExists('positions');
         Schema::dropIfExists('vacancy_jobs');
     }
