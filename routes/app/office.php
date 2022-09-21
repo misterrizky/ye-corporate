@@ -21,6 +21,7 @@ use App\Http\Controllers\Office\HRM\PermissionController;
 use App\Http\Controllers\Office\HRM\VacancyJobController;
 use App\Http\Controllers\Office\Master\IsicTypeController;
 use App\Http\Controllers\Office\CRM\ContactGroupController;
+use App\Http\Controllers\Office\CRM\LeadActivityController;
 use App\Http\Controllers\Office\HRM\EmployeeMemoController;
 use App\Http\Controllers\Office\HRM\JobApplicantController;
 use App\Http\Controllers\Office\Master\ChangelogController;
@@ -160,6 +161,10 @@ Route::group(['domain' => ''], function() {
                 Route::resource('contact-group', ContactGroupController::class);
                 Route::get('lead/list',[LeadController::class, 'list'])->name('lead.list');
                 Route::resource('lead', LeadController::class);
+                Route::get('lead-activity/list',[LeadActivityController::class, 'list'])->name('lead-activity.list');
+                Route::patch('lead-activity/{leadActivity}/completed',[LeadActivityController::class, 'complete'])->name('lead-activity.completed');
+                Route::patch('lead-activity/{leadActivity}/progress',[LeadActivityController::class, 'uncomplete'])->name('lead-activity.progress');
+                Route::resource('lead-activity', LeadActivityController::class);
                 Route::get('client/list',[ClientController::class, 'list'])->name('client.list');
                 Route::resource('client', ClientController::class);
                 Route::get('newsletter/list',[NewsletterController::class, 'list'])->name('newsletter.list');

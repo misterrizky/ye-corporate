@@ -45,7 +45,7 @@ return new class extends Migration
             $table->longText('notes')->nullable();
             $table->enum('type',['Follow Up','Meeting'])->default('Follow Up');
             $table->enum('st',['Pending','On Going','Completed'])->default('Pending');
-            $table->timestamp('completed_at');
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -90,7 +90,7 @@ return new class extends Migration
             $table->longText('notes')->nullable();
             $table->enum('type',['Follow Up','Meeting'])->default('Follow Up');
             $table->enum('st',['Pending','On Going','Completed'])->default('Pending');
-            $table->timestamp('completed_at');
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

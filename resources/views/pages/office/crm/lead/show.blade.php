@@ -201,12 +201,12 @@
                             <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x fs-6 fw-semibold mt-6 mb-8">
                                 <li class="nav-item">
                                     <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_contact_view_general">
-                                    <span class="svg-icon svg-icon-4 me-1">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11 2.375L2 9.575V20.575C2 21.175 2.4 21.575 3 21.575H9C9.6 21.575 10 21.175 10 20.575V14.575C10 13.975 10.4 13.575 11 13.575H13C13.6 13.575 14 13.975 14 14.575V20.575C14 21.175 14.4 21.575 15 21.575H21C21.6 21.575 22 21.175 22 20.575V9.575L13 2.375C12.4 1.875 11.6 1.875 11 2.375Z" fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                    General</a>
+                                        <span class="svg-icon svg-icon-4 me-1">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M11 2.375L2 9.575V20.575C2 21.175 2.4 21.575 3 21.575H9C9.6 21.575 10 21.175 10 20.575V14.575C10 13.975 10.4 13.575 11 13.575H13C13.6 13.575 14 13.975 14 14.575V20.575C14 21.175 14.4 21.575 15 21.575H21C21.6 21.575 22 21.175 22 20.575V9.575L13 2.375C12.4 1.875 11.6 1.875 11 2.375Z" fill="currentColor" />
+                                            </svg>
+                                        </span>
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_contact_view_meetings">
@@ -230,6 +230,18 @@
                                         Activity
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#add_new_activity">
+                                        <span class="svg-icon svg-icon-4 me-1">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
+                                                <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="currentColor" />
+                                                <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
+                                            </svg>
+                                        </span>
+                                        Add New Activity
+                                    </a>
+                                </li>
                             </ul>
                             <div class="tab-content" id="">
                                 <div class="tab-pane fade show active" id="kt_contact_view_general" role="tabpanel">
@@ -250,188 +262,106 @@
                                 </div>
                                 <div class="tab-pane fade" id="kt_contact_view_meetings" role="tabpanel">
                                     <ul class="nav nav-pills d-flex flex-stack flex-nowrap hover-scroll-x">
+                                        @foreach ($date as $item)
                                         <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#kt_schedule_day_0">
-                                                <span class="opacity-50 fs-7 fw-semibold">Su</span>
-                                                <span class="fs-6 fw-bold">22</span>
+                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#meeting_{{$item->date->format('d-m')}}">
+                                                <span class="opacity-50 fs-7 fw-semibold">{{$item->date->format('M')}}</span>
+                                                <span class="fs-6 fw-bold">{{$item->date->format('d')}}</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary active" data-bs-toggle="tab" href="#kt_schedule_day_1">
-                                                <span class="opacity-50 fs-7 fw-semibold">Mo</span>
-                                                <span class="fs-6 fw-bold">23</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#kt_schedule_day_2">
-                                                <span class="opacity-50 fs-7 fw-semibold">Tu</span>
-                                                <span class="fs-6 fw-bold">24</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#kt_schedule_day_3">
-                                                <span class="opacity-50 fs-7 fw-semibold">We</span>
-                                                <span class="fs-6 fw-bold">25</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#kt_schedule_day_4">
-                                                <span class="opacity-50 fs-7 fw-semibold">Th</span>
-                                                <span class="fs-6 fw-bold">26</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#kt_schedule_day_5">
-                                                <span class="opacity-50 fs-7 fw-semibold">Fr</span>
-                                                <span class="fs-6 fw-bold">27</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#kt_schedule_day_6">
-                                                <span class="opacity-50 fs-7 fw-semibold">Sa</span>
-                                                <span class="fs-6 fw-bold">28</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#kt_schedule_day_7">
-                                                <span class="opacity-50 fs-7 fw-semibold">Su</span>
-                                                <span class="fs-6 fw-bold">29</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#kt_schedule_day_8">
-                                                <span class="opacity-50 fs-7 fw-semibold">Mo</span>
-                                                <span class="fs-6 fw-bold">30</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item me-1">
-                                            <a class="nav-link btn d-flex flex-column flex-center rounded-pill min-w-45px me-2 py-4 px-3 text-dark text-active-white btn-active-primary" data-bs-toggle="tab" href="#kt_schedule_day_9">
-                                                <span class="opacity-50 fs-7 fw-semibold">Tu</span>
-                                                <span class="fs-6 fw-bold">31</span>
-                                            </a>
-                                        </li>
+                                        @endforeach
                                     </ul>
                                     <div class="tab-content">
-                                        <div id="kt_schedule_day_0" class="tab-pane fade show">
-                                            <div class="d-flex flex-stack position-relative mt-8">
-                                                <div class="position-absolute h-100 w-4px bg-info rounded top-0 start-0"></div>
-                                                <div class="fw-semibold ms-5 text-gray-600">
-                                                    <div class="fs-5">9:00 - 10:00
-                                                    <span class="fs-7 text-gray-400 text-uppercase">am</span></div>
-                                                    <a href="#" class="fs-5 fw-bold text-gray-800 text-hover-primary mb-2">Project Review &amp; Testing</a>
-                                                    <div class="text-gray-400">Lead by
-                                                    <a href="#">Yannis Gloverson</a></div>
+                                        @foreach ($date as $item)
+                                        @php
+                                        $meeting = \App\Models\CRM\LeadActivity::where('date',$item->date)->where('type','Meeting')->get();
+                                        @endphp
+                                            <div id="meeting_{{$item->date->format('d-m')}}" class="tab-pane fade show">
+                                                @foreach ($meeting as $items)
+                                                <div class="d-flex flex-stack position-relative mt-8">
+                                                    <div class="position-absolute h-100 w-4px bg-info rounded top-0 start-0"></div>
+                                                    <div class="fw-semibold ms-5 text-gray-600">
+                                                        <div class="fs-5">
+                                                            @if($items->completed_at)
+                                                            {{$items->completed_at->format('H:i')}} <span class="fs-7 text-gray-400 text-uppercase">am</span>
+                                                            @else
+                                                            @endif
+                                                        </div>
+                                                        <a href="#" class="fs-5 fw-bold text-gray-800 text-hover-primary mb-2">{{$items->notes}}</a>
+                                                        <div class="text-gray-400">Lead by
+                                                        <a href="#">{{$items->employee->name}}</a></div>
+                                                    </div>
+                                                    {{-- <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">View</a> --}}
                                                 </div>
-                                                <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">View</a>
+                                                @endforeach
                                             </div>
-                                        </div>
-                                        <div id="kt_schedule_day_1" class="tab-pane fade show active">
-                                            <div class="d-flex flex-stack position-relative mt-8">
-                                                <div class="position-absolute h-100 w-4px bg-primary rounded top-0 start-0"></div>
-                                                <div class="fw-semibold ms-5 text-gray-600">
-                                                    <div class="fs-5">12:00 - 13:00
-                                                    <span class="fs-7 text-gray-400 text-uppercase">pm</span></div>
-                                                    <a href="#" class="fs-5 fw-bold text-gray-800 text-hover-primary mb-2">Dashboard UI/UX Design Review</a>
-                                                    <div class="text-gray-400">Lead by
-                                                    <a href="#">Mark Randall</a></div>
-                                                </div>
-                                                <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">View</a>
-                                            </div>
-                                        </div>
-                                        <div id="kt_schedule_day_2" class="tab-pane fade show">
-                                            <div class="d-flex flex-stack position-relative mt-8">
-                                                <div class="position-absolute h-100 w-4px bg-primary rounded top-0 start-0"></div>
-                                                <div class="fw-semibold ms-5 text-gray-600">
-                                                    <div class="fs-5">11:00 - 11:45
-                                                    <span class="fs-7 text-gray-400 text-uppercase">am</span></div>
-                                                    <a href="#" class="fs-5 fw-bold text-gray-800 text-hover-primary mb-2">Dashboard UI/UX Design Review</a>
-                                                    <div class="text-gray-400">Lead by
-                                                    <a href="#">Kendell Trevor</a></div>
-                                                </div>
-                                                <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">View</a>
-                                            </div>
-                                        </div>
-                                        <div id="kt_schedule_day_3" class="tab-pane fade show">
-                                            <div class="d-flex flex-stack position-relative mt-8">
-                                                <div class="position-absolute h-100 w-4px bg-info rounded top-0 start-0"></div>
-                                                <div class="fw-semibold ms-5 text-gray-600">
-                                                    <div class="fs-5">14:30 - 15:30
-                                                    <span class="fs-7 text-gray-400 text-uppercase">pm</span></div>
-                                                    <a href="#" class="fs-5 fw-bold text-gray-800 text-hover-primary mb-2">Dashboard UI/UX Design Review</a>
-                                                    <div class="text-gray-400">Lead by
-                                                    <a href="#">Bob Harris</a></div>
-                                                </div>
-                                                <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">View</a>
-                                            </div>
-                                        </div>
-                                        <div id="kt_schedule_day_4" class="tab-pane fade show">
-                                            <div class="d-flex flex-stack position-relative mt-8">
-                                                <div class="position-absolute h-100 w-4px bg-success rounded top-0 start-0"></div>
-                                                <div class="fw-semibold ms-5 text-gray-600">
-                                                    <div class="fs-5">13:00 - 14:00
-                                                    <span class="fs-7 text-gray-400 text-uppercase">pm</span></div>
-                                                    <a href="#" class="fs-5 fw-bold text-gray-800 text-hover-primary mb-2">Lunch &amp; Learn Catch Up</a>
-                                                    <div class="text-gray-400">Lead by
-                                                    <a href="#">Kendell Trevor</a></div>
-                                                </div>
-                                                <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">View</a>
-                                            </div>
-                                        </div>
-                                        <div id="kt_schedule_day_5" class="tab-pane fade show">
-                                            <div class="d-flex flex-stack position-relative mt-8">
-                                                <div class="position-absolute h-100 w-4px bg-primary rounded top-0 start-0"></div>
-                                                <div class="fw-semibold ms-5 text-gray-600">
-                                                    <div class="fs-5">16:30 - 17:30
-                                                    <span class="fs-7 text-gray-400 text-uppercase">pm</span></div>
-                                                    <a href="#" class="fs-5 fw-bold text-gray-800 text-hover-primary mb-2">Project Review &amp; Testing</a>
-                                                    <div class="text-gray-400">Lead by
-                                                    <a href="#">Michael Walters</a></div>
-                                                </div>
-                                                <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">View</a>
-                                            </div>
-                                        </div>
-                                        <div id="kt_schedule_day_6" class="tab-pane fade show">
-                                            <div class="d-flex flex-stack position-relative mt-8">
-                                                <div class="position-absolute h-100 w-4px bg-success rounded top-0 start-0"></div>
-                                                <div class="fw-semibold ms-5 text-gray-600">
-                                                    <div class="fs-5">11:00 - 11:45
-                                                    <span class="fs-7 text-gray-400 text-uppercase">am</span></div>
-                                                    <a href="#" class="fs-5 fw-bold text-gray-800 text-hover-primary mb-2">9 Degree Project Estimation Meeting</a>
-                                                    <div class="text-gray-400">Lead by
-                                                    <a href="#">Walter White</a></div>
-                                                </div>
-                                                <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">View</a>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="kt_contact_view_activity" role="tabpanel">
                                     <div class="timeline-label">
+                                        @foreach ($follow as $item)
                                         <div class="timeline-item">
-                                            <div class="timeline-label fw-bold text-gray-800 fs-6">08:42</div>
-                                            <div class="timeline-badge">
-                                                <i class="fa fa-genderless text-warning fs-1"></i>
-                                            </div>
-                                            <div class="fw-mormal timeline-content text-muted ps-3">Outlines keep you honest. And keep structure</div>
+                                            <div class="timeline-label fw-bold text-gray-800 fs-6">{{$item->date->format('j M y')}}</div>
+                                            @if($item->completed_at)
+                                            <a href="javascript:;" onclick="handle_confirm('Are you sure want to mark on progress this activity ?', 'Yes, i`m sure', 'No, i`m not','PATCH','{{route('office.crm.lead-activity.progress',$item->id)}}');">
+                                            @else
+                                            <a href="javascript:;" onclick="handle_confirm('Are you sure want to mark complete this activity ?', 'Yes, i`m sure', 'No, i`m not','PATCH','{{route('office.crm.lead-activity.completed',$item->id)}}');">
+                                            @endif
+                                                <div class="timeline-badge">
+                                                    <i class="fa fa-genderless text-{{$item->completed_at ? 'success' : 'warning'}} fs-1"></i>
+                                                </div>
+                                            </a>
+                                            <div class="fw-mormal timeline-content text-muted ps-3">{{$item->notes}}</div>
                                         </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-label fw-bold text-gray-800 fs-6">10:00</div>
-                                            <div class="timeline-badge">
-                                                <i class="fa fa-genderless text-success fs-1"></i>
-                                            </div>
-                                            <div class="timeline-content d-flex">
-                                                <span class="fw-bold text-gray-800 ps-3">AEOL meeting</span>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-label fw-bold text-gray-800 fs-6">14:37</div>
-                                            <div class="timeline-badge">
-                                                <i class="fa fa-genderless text-danger fs-1"></i>
-                                            </div>
-                                            <div class="timeline-content fw-bold text-gray-800 ps-3">Make deposit
-                                            <a href="#" class="text-primary">USD 700</a>. to ESL</div>
-                                        </div>
+                                        @endforeach
                                     </div>
+                                </div>
+                                <div class="tab-pane fade" id="add_new_activity" role="tabpanel">
+                                    <form id="form_activity" class="form">
+                                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                            <div class="col">
+                                                <div class="fv-row mb-7">
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Date</span>
+                                                        <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Enter the activitie's date  (optional)."></i>
+                                                    </label>
+                                                    <input type="text" class="form-control form-control-solid" name="date" id="date" />
+                                                    <input type="hidden" class="form-control form-control-solid" name="lead" value="{{$data->id}}" />
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="fv-row mb-7">
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span class="required">Type</span>
+                                                    </label>
+                                                    <div class="w-100">
+                                                        <div class="form-floating border rounded">
+                                                            <select name="type" class="form-select form-select-solid lh-1 py-3">
+                                                                <option value="">Choose Type</option>
+                                                                <option value="Follow Up">Follow Up</option>
+                                                                <option value="Meeting">Meeting</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-7">
+                                            <label class="fs-6 fw-semibold form-label mt-3">
+                                                <span class="required">Notes</span>
+                                                <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Enter any additional notes about the contact (optional)."></i>
+                                            </label>
+                                            <textarea class="form-control form-control-solid" name="notes"></textarea>
+                                        </div>
+                                        <div class="separator mb-6"></div>
+                                        <div class="d-flex justify-content-end">
+                                            <button type="button" onclick="load_url('{{route('office.crm.lead.index')}}');" class="btn btn-light me-3">Back</button>
+                                            <button id="tombol_simpan_activity" onclick="handle_upload('#tombol_simpan_activity','#form_activity','{{route('office.crm.lead-activity.store')}}','POST');" class="btn btn-sm btn-success">
+                                                Create
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -443,6 +373,7 @@
 </div>
 <div id="content_input"></div>
 <script>
+    obj_date('date');
     function handleStore(tombol, form, url, method){
         $(document).one('submit', form, function(e) {
             let data = new FormData(this);

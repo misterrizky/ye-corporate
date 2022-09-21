@@ -134,7 +134,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div id="list_result"></div>
+                    <div class="table-responsive">
+                        <div id="list_result"></div>
+                    </div>
                 </div>
             </div>
         </div>

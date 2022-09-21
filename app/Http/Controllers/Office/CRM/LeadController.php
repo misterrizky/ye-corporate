@@ -73,8 +73,10 @@ class LeadController extends Controller
     {
         if($request->ajax())
         {
+            $follow = LeadActivity::where('lead_id', $lead->id)->where('type','Follow Up')->get();
+            $date = LeadActivity::select('date')->where('lead_id', $lead->id)->where('type','Meeting')->groupBy('date')->get();
             $collection = Lead::get();
-            return view('pages.office.crm.lead.show', ['data' => $lead, 'collection' => $collection]);
+            return view('pages.office.crm.lead.show', ['data' => $lead, 'collection' => $collection, 'follow' => $follow, 'date' => $date]);
         }
         return view('pages.office.theme');
     }
