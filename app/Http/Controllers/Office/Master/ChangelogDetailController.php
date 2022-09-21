@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Office\Master;
 
 use Illuminate\Http\Request;
-use App\Models\Master\Changelog;
 use App\Http\Controllers\Controller;
 use App\Models\Master\ChangelogDetail;
 use Illuminate\Support\Facades\Validator;
@@ -12,37 +11,37 @@ class ChangelogDetailController extends Controller
 {
     public function __construct()
     {
-        //
+        // 
     }
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // 
     }
     public function create()
     {
         //
     }
-    public function store(Request $request, Changelog $changelog)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'changelog_id' => 'required',
             'title' => 'required',
             'description' => 'required',
             'type' => 'required',
         ]);
-
         if ($validator->fails()){
             return response()->json([
                 'alert' => 'error',
                 'message' => $validator->errors()->first(),
             ], 200);
         }
-        $changelog = new ChangelogDetail;
-        $changelog->changelog_id = $changelog->id;
-        $changelog->title = $request->title;
-        $changelog->description = $request->description;
-        $changelog->url = $request->url;
-        $changelog->type = $request->type;
-        $changelog->save();
+        $detail = new ChangelogDetail;
+        $detail->changelog_id = $request->changelog_id;
+        $detail->title = $request->title;
+        $detail->description = $request->description;
+        $detail->url = $request->url;
+        $detail->type = $request->type;
+        $detail->save();
         return response()->json([
             'alert' => 'success',
             'message' => 'Changelog Saved',
@@ -61,6 +60,7 @@ class ChangelogDetailController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'description' => 'required',
+            'type' => 'required',
         ]);
         if ($validator->fails()){
             return response()->json([

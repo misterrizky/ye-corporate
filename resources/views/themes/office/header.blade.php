@@ -33,7 +33,7 @@
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a class="btn btn-sm btn-light-warning" href="javascript:;">
+                        <a class="btn btn-sm btn-light-warning" href="javascript:;" onclick="load_url('{{route('office.hrm.day-off.index')}}');">
                             <span class="menu-icon">
                                 <span class="svg-icon svg-icon-3">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

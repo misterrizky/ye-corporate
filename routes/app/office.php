@@ -7,6 +7,7 @@ use App\Http\Controllers\Office\CRM\LeadController;
 use App\Http\Controllers\Office\HRM\RoleController;
 use App\Http\Controllers\Office\DashboardController;
 use App\Http\Controllers\Office\CRM\ClientController;
+use App\Http\Controllers\Office\HRM\DayOffController;
 use App\Http\Controllers\Office\Master\BankController;
 use App\Http\Controllers\Office\Master\IsicController;
 use App\Http\Controllers\Office\Support\FaqController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Office\Regional\CountryController;
 use App\Http\Controllers\Office\Regional\RegencyController;
 use App\Http\Controllers\Office\Regional\VillageController;
 use App\Http\Controllers\Office\Corporate\HistoryController;
+use App\Http\Controllers\Office\Corporate\ServiceController;
 use App\Http\Controllers\Office\Regional\DistrictController;
 use App\Http\Controllers\Office\Regional\ProvinceController;
 use App\Http\Controllers\Office\Corporate\LegalDocController;
@@ -124,6 +126,8 @@ Route::group(['domain' => ''], function() {
                 Route::resource('village', VillageController::class);
             });
             Route::name('hrm.')->group(function(){
+                Route::get('day-off/list',[DayOffController::class, 'list'])->name('day-off.list');
+                Route::resource('day-off', DayOffController::class);
                 Route::post('department/get-list',[DepartmentController::class, 'get_list'])->name('department.get_list');
                 Route::get('department/list',[DepartmentController::class, 'list'])->name('department.list');
                 Route::get('department/{department}/show-list',[DepartmentController::class, 'show_list'])->name('department.show_list');
@@ -174,6 +178,8 @@ Route::group(['domain' => ''], function() {
                 Route::get('kpi/{kpi}/{objective}/show-edit',[KpiController::class, 'show_edit'])->name('kpi.show_edit');
                 Route::resource('kpi',KpiController::class);
                 Route::resource('kpi-objective',KpiObjectiveController::class);
+                Route::get('service/list',[ServiceController::class, 'list'])->name('service.list');
+                Route::resource('service', ServiceController::class);
                 Route::get('history/list',[HistoryController::class, 'list'])->name('history.list');
                 Route::resource('history', HistoryController::class);
                 Route::get('legal-policy/list',[LegalPolicyController::class, 'list'])->name('legal-policy.list');

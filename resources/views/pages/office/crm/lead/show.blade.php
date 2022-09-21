@@ -515,7 +515,7 @@
     }
     loadList("{{route('office.crm.contact-group.index')}}");
     function loadList(url){
-        $.get(url, {}, function(result) {
+        $.get(url, {type:'lead'}, function(result) {
             $('#list_group').html(result);
         }, "html");
     }

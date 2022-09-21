@@ -53,7 +53,7 @@ return new class extends Migration
             $table->id();
             $table->integer('employee_id')->default(0);
             $table->integer('contact_group_id')->default(0);
-            $table->integer('company_industry_id')->default(0)->nullable()->comment('select option');
+            $table->integer('company_industry_id')->default(0)->comment('select option');
             $table->string('company_name')->nullable();
             $table->string('company_logo')->nullable();
             $table->string('title')->nullable();
@@ -71,9 +71,10 @@ return new class extends Migration
             $table->string('postcode',5)->nullable();
             $table->string('password')->nullable();
             $table->date('date_birth')->nullable();
-            $table->string('website')->nullable();
+            $table->string('url')->nullable();
+            $table->string('paypal')->nullable();
             $table->string('google_id')->nullable();
-            $table->enum('type',['Client','Customer','Lead','Partner'])->nullable();
+            $table->enum('type',['Client','Customer','Partner'])->nullable();
             $table->enum('category',['Offline','Online'])->nullable();
             $table->enum('st',['Active','Non Active'])->nullable();
             $table->string('avatar')->nullable();

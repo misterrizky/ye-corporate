@@ -21,9 +21,11 @@ class ContactGroupController extends Controller
     }
     public function index(Request $request)
     {
+        $type = $request->type;
         $lead = Lead::get();
+        $client = Client::get();
         $collection = ContactGroup::get();
-        return view('pages.office.crm.group.list',compact('collection','lead'));
+        return view('pages.office.crm.group.list',compact('collection','lead','client','type'));
     }
     public function create()
     {

@@ -100,7 +100,7 @@ class DepartmentController extends Controller
     public function show_list(Request $request, Department $department)
     {
         $collection = $department->position;
-        return view('pages.office.hrm.department.show_list', compact('collection'));
+        return view('pages.office.hrm.department.show_list', compact('collection','department'));
     }
     public function show_create(Department $department)
     {

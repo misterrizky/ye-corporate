@@ -47,7 +47,6 @@
                                 <div class="form-group row">
                                     <div class="col-12 mb-3">
                                         <div class="form-floating">
-                                            <input type="hidden" class="form-control" id="changelog_id" name="changelog_id" placeholder="Technology" value="{{$changelog->id}}"/>
                                             <input type="text" class="form-control" id="title" name="title" placeholder="Technology" value="{{$data->title}}"/>
                                             <label for="title">Title</label>
                                         </div>
@@ -58,28 +57,17 @@
                                         <textarea class="form-control d-none" name="description">{{$data->description}}</textarea>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <div class="form-floating">
-                                            <input type="url" class="form-control" id="url" name="url" placeholder="Technology" value="{{$data->url}}"/>
-                                            <label for="url">URL</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <label for="thumbnail">Type</label>
-                                        <select class="form-select" name="type">
-                                            <option value="">Choose Type</option>
-                                            <option value="New" {{$data->type=="New" ? 'selected' : ''}}>New</option>
-                                            <option value="Update" {{$data->type=="Update" ? 'selected' : ''}}>Update</option>
-                                            <option value="Fix" {{$data->type=="Fix" ? 'selected' : ''}}>Fix</option>
-                                        </select>
+                                        <label for="thumbnail">Thumbnail</label>
+                                        <input type="file" class="form-control" id="thumbnail" name="thumbnail"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button id="tombol_simpan" onclick="handle_upload('#tombol_simpan','#form_input','{{$data->id ? route('office.master.changelog-detail.update',$data->id) : route('office.master.changelog-detail.store')}}','{{$data->id ? 'PATCH' : 'POST'}}');" class="btn btn-sm btn-{{$data->id ? 'warning' : 'success'}}">
+                                <button id="tombol_simpan" onclick="handle_upload('#tombol_simpan','#form_input','{{$data->id ? route('office.corporate.service.update',$data->id) : route('office.corporate.service.store')}}','{{$data->id ? 'PATCH' : 'POST'}}');" class="btn btn-sm btn-{{$data->id ? 'warning' : 'success'}}">
                                     {{$data->id ? 'Update' : 'Create'}}
                                 </button>
                                 @if($data->id)
-                                <button type="button" onclick="handle_confirm('Are you sure want to delete this changelog ?', 'Yes, i`m sure', 'No, i`m not','DELETE','{{route('office.master.changelog-detail.destroy',$data->id)}}');" class="btn btn-sm btn-danger">
+                                <button type="button" onclick="handle_confirm('Are you sure want to delete this service ?', 'Yes, i`m sure', 'No, i`m not','DELETE','{{route('office.corporate.service.destroy',$data->id)}}');" class="btn btn-sm btn-danger">
                                     Delete
                                 </button>
                                 @endif

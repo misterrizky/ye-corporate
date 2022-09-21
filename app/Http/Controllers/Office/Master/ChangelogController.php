@@ -12,7 +12,7 @@ class ChangelogController extends Controller
 {
     public function __construct()
     {
-        //
+        // 
     }
     public function index(Request $request)
     {
@@ -30,7 +30,6 @@ class ChangelogController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
         ]);
-
         if ($validator->fails()){
             return response()->json([
                 'alert' => 'error',
@@ -38,11 +37,11 @@ class ChangelogController extends Controller
             ], 200);
         }
         $changelog = new Changelog;
-        $changelog->fill($request->all());
+        $changelog->name = $request->name;
         $changelog->save();
         return response()->json([
             'alert' => 'success',
-            'message' => 'Commit Saved',
+            'message' => 'Commit Created',
         ]);
     }
     public function show(Request $request, Changelog $changelog)
@@ -54,12 +53,21 @@ class ChangelogController extends Controller
     }
     public function edit(Changelog $changelog)
     {
-        return view('pages.office.master.changelog.input', ['data' => $changelog]);
+        return view('pages.office.master.changelog.input',['data' => $changelog]);
     }
     public function update(Request $request, Changelog $changelog)
     {
-        $changelog->fill($request->all());
-        $changelog->update();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if ($validator->fails()){
+            return response()->json([
+                'alert' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 200);
+        }
+        $changelog->name = $request->name;
+        $changelog->save();
         return response()->json([
             'alert' => 'success',
             'message' => 'Commit Updated',
@@ -75,20 +83,20 @@ class ChangelogController extends Controller
     }
     public function list(Request $request)
     {
-        $collection = Changelog::get();
-        return view('pages.office.master.changelog.list', compact('collection'));
+        $collection = Changelog::orderBy('id','desc')->get();
+        return view('pages.office.master.changelog.list',['collection' => $collection]);
     }
     public function show_list(Request $request, Changelog $changelog)
     {
-        $collection = ChangelogDetail::where('changelog_id', $changelog->id)->get();
-        return view('pages.office.master.changelog.show_list', compact('collection','changelog'));
+        $collection = ChangelogDetail::where('changelog_id',$changelog->id)->get();
+        return view('pages.office.master.changelog.show_list',['data' => $changelog,'collection' => $collection]);
     }
     public function show_create(Changelog $changelog)
     {
-        return view('pages.office.master.changelog.show_input', ['data' => new ChangelogDetail, 'changelog' => $changelog]);
+        return view('pages.office.master.changelog.show_input',['data' => new ChangelogDetail, 'changelog' => $changelog]);
     }
     public function show_edit(Changelog $changelog, ChangelogDetail $detail)
     {
-        return view('pages.office.master.changelog.show_input', ['data' => $detail, 'changelog' => $changelog]);
+        return view('pages.office.master.changelog.show_input',['data' => $detail, 'changelog' => $changelog]);
     }
 }

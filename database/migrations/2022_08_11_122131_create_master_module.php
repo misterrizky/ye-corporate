@@ -76,12 +76,12 @@ return new class extends Migration
             $table->boolean('is_primary');
             $table->softDeletes();
         });
-        Schema::create('contents', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
+            $table->longText('title')->nullable();
+            $table->longText('slug')->nullable();
             $table->longText('description')->nullable();
-            $table->string('banner')->nullable();
-            $table->enum('type',['about','visi_misi','what_we_do','our_strategy','why_choose_us','our_process','join_team','what_makes_us_different'])->nullable();
+            $table->string('thumbnail')->nullable();
             $table->softDeletes();
         });
         Schema::create('days', function (Blueprint $table) {
@@ -191,7 +191,7 @@ return new class extends Migration
         Schema::dropIfExists('companies');
         Schema::dropIfExists('company_addresses');
         Schema::dropIfExists('company_bank_accounts');
-        Schema::dropIfExists('contents');
+        Schema::dropIfExists('services');
         Schema::dropIfExists('days');
         Schema::dropIfExists('events');
         Schema::dropIfExists('faq_categories');
@@ -204,7 +204,6 @@ return new class extends Migration
         Schema::dropIfExists('legal_doc_types');
         Schema::dropIfExists('legal_policies');
         Schema::dropIfExists('mail_configs');
-        Schema::dropIfExists('media');
         Schema::dropIfExists('newsletters');
     }
 };
